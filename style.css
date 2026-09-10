@@ -1354,3 +1354,30 @@ footer p {
 
 }
 ```
+```css
+/* =========================
+   EMAIL CONTACT
+========================= */
+
+.email-contact {
+  margin-top: 25px;
+}
+
+.email-contact strong {
+  direction: ltr;
+  display: block;
+  margin-top: 4px;
+  font-size: 15px;
+  color: #ffffff;
+  word-break: break-word;
+}
+
+.email-btn {
+  margin-top: 10px;
+}
+
+.email-btn:hover {
+  border-color: #35a9ff;
+  color: #35a9ff;
+}
+```
