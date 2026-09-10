@@ -471,44 +471,43 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 ```
 ```javascript
-/* =========================
-   SCROLL REVEAL
-========================= */
+```javascript
+/* SCROLL ANIMATION */
 
-const revealElements =
-  document.querySelectorAll(
+document.addEventListener("DOMContentLoaded", function () {
+
+  const elements = document.querySelectorAll(
     ".section, .field-card, .skill-box, .quote, .contact-card"
   );
 
-revealElements.forEach((element) => {
-  element.classList.add("reveal");
-});
+  elements.forEach(function (element) {
+    element.classList.add("reveal");
+  });
 
-const revealObserver =
-  new IntersectionObserver(
-    (entries) => {
+  function revealOnScroll() {
 
-      entries.forEach((entry) => {
+    elements.forEach(function (element) {
 
-        if (entry.isIntersecting) {
+      const position =
+        element.getBoundingClientRect().top;
 
-          entry.target.classList.add("show");
+      const screenHeight =
+        window.innerHeight;
 
-          revealObserver.unobserve(
-            entry.target
-          );
+      if (position < screenHeight - 100) {
+        element.classList.add("show");
+      }
 
-        }
+    });
 
-      });
+  }
 
-    },
-    {
-      threshold: 0.15
-    }
+  window.addEventListener(
+    "scroll",
+    revealOnScroll
   );
 
-revealElements.forEach((element) => {
-  revealObserver.observe(element);
+  revealOnScroll();
+
 });
 ```
