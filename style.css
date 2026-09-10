@@ -1463,3 +1463,183 @@ footer p {
   transform: translateY(0);
 }
 ```
+```css
+/* =========================
+   VISION & FUTURE
+========================= */
+
+.vision {
+  position: relative;
+}
+
+.vision-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.vision-card {
+  position: relative;
+  min-height: 360px;
+  padding: 30px;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.035),
+      rgba(255,255,255,.015)
+    );
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  overflow: hidden;
+
+  transition: .35s ease;
+}
+
+.vision-card::before {
+  content: "";
+
+  position: absolute;
+
+  width: 180px;
+  height: 180px;
+
+  top: -90px;
+  left: -90px;
+
+  border-radius: 50%;
+
+  background: #35a9ff;
+
+  filter: blur(70px);
+
+  opacity: .08;
+
+  transition: .35s;
+}
+
+.vision-card:hover {
+  transform: translateY(-8px);
+
+  border-color: rgba(53,169,255,.35);
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.25);
+}
+
+.vision-card:hover::before {
+  opacity: .18;
+}
+
+.vision-number {
+  position: absolute;
+
+  top: 25px;
+  left: 25px;
+
+  color: rgba(255,255,255,.25);
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.vision-icon {
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 28px;
+
+  border-radius: 16px;
+
+  background: rgba(41,225,189,.08);
+
+  color: #29e1bd;
+
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.vision-card small {
+  color: #29e1bd;
+
+  font-size: 8px;
+
+  letter-spacing: 2px;
+}
+
+.vision-card h3 {
+  margin: 7px 0 12px;
+
+  font-size: 25px;
+}
+
+.vision-card p {
+  color: #8da2b8;
+
+  font-size: 11px;
+
+  line-height: 2;
+}
+
+.vision-bottom {
+  max-width: 800px;
+
+  margin: 55px auto 0;
+
+  text-align: center;
+}
+
+.vision-line {
+  width: 70px;
+  height: 2px;
+
+  margin: 0 auto 25px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #29e1bd,
+      #35a9ff
+    );
+}
+
+.vision-bottom p {
+  color: #8da2b8;
+
+  font-size: 12px;
+
+  line-height: 2;
+}
+
+.vision-bottom strong {
+  display: block;
+
+  margin-top: 18px;
+
+  color: #29e1bd;
+
+  font-size: 17px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+  .vision-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vision-card {
+    min-height: auto;
+  }
+
+}
+```
