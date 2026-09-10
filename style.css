@@ -1381,3 +1381,35 @@ footer p {
   color: #35a9ff;
 }
 ```
+```css
+/* FACEBOOK */
+
+.facebook-btn {
+  margin-top: 10px;
+}
+
+.facebook-btn span {
+  width: 26px;
+  height: 26px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-right: 8px;
+
+  border-radius: 50%;
+
+  background: #1877f2;
+  color: #fff;
+
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.facebook-btn:hover {
+  border-color: #1877f2;
+  color: #1877f2;
+}
+```
