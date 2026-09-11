@@ -1810,3 +1810,216 @@ footer p {
 
   font
 ```
+```css
+/* =================================
+   EXTRA GLOW & ANIMATION
+================================= */
+
+.vision-card {
+  animation: visionFloat 4s ease-in-out infinite;
+  box-shadow:
+    0 0 0 rgba(41, 225, 189, 0);
+}
+
+/* كل كارت يبدأ في وقت مختلف */
+
+.medicine-card {
+  animation-delay: 0s;
+}
+
+.coding-card {
+  animation-delay: .5s;
+}
+
+.trading-card {
+  animation-delay: 1s;
+}
+
+
+/* إضاءة الكارت */
+
+.vision-card::before {
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  top: -100px;
+  right: -100px;
+
+  border-radius: 50%;
+
+  background: #29e1bd;
+
+  filter: blur(80px);
+
+  opacity: .18;
+
+  animation: glowMove 4s ease-in-out infinite;
+
+  pointer-events: none;
+}
+
+
+/* إضاءة زرقاء للكارت الثاني */
+
+.coding-card::before {
+  background: #35a9ff;
+}
+
+
+/* إضاءة خضراء للكارت الثالث */
+
+.trading-card::before {
+  background: #29e1bd;
+}
+
+
+/* حركة الكروت */
+
+@keyframes visionFloat {
+
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-7px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+
+}
+
+
+/* حركة الإضاءة */
+
+@keyframes glowMove {
+
+  0% {
+    transform: translate(0, 0);
+    opacity: .10;
+  }
+
+  50% {
+    transform: translate(-35px, 35px);
+    opacity: .28;
+  }
+
+  100% {
+    transform: translate(0, 0);
+    opacity: .10;
+  }
+
+}
+
+
+/* إضاءة خاصة للأيقونات */
+
+.medical-animation,
+.code-animation,
+.trading-animation {
+
+  filter:
+    drop-shadow(
+      0 0 10px rgba(41,225,189,.20)
+    );
+
+}
+
+
+/* نبض إضافي */
+
+.medical-cross {
+  animation:
+    medicalPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes medicalPulse {
+
+  0%, 100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 10px rgba(41,225,189,.15);
+  }
+
+  50% {
+    transform: scale(1.08);
+    box-shadow:
+      0 0 30px rgba(41,225,189,.45);
+  }
+
+}
+
+
+/* الكود يلمع */
+
+.code-window {
+  box-shadow:
+    0 0 15px rgba(53,169,255,.15);
+
+  animation:
+    codeGlow 2s ease-in-out infinite;
+}
+
+@keyframes codeGlow {
+
+  0%, 100% {
+    box-shadow:
+      0 0 10px rgba(53,169,255,.10);
+  }
+
+  50% {
+    box-shadow:
+      0 0 35px rgba(53,169,255,.35);
+  }
+
+}
+
+
+/* الرسم البياني يلمع */
+
+.trading-animation {
+
+  box-shadow:
+    inset 0 0 25px rgba(41,225,189,.08);
+}
+
+.trading-animation polyline {
+
+  filter:
+    drop-shadow(
+      0 0 8px rgba(41,225,189,.9)
+    );
+}
+
+
+/* إضاءة عند مرور الماوس */
+
+.vision-card:hover {
+
+  transform:
+    translateY(-12px)
+    scale(1.02);
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.35),
+    0 0 35px rgba(41,225,189,.12);
+
+}
+
+
+/* الموبايل */
+
+@media (max-width: 800px) {
+
+  .vision-card {
+    animation-duration: 5s;
+  }
+
+}
+```
