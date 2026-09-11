@@ -2023,3 +2023,863 @@ footer p {
 
 }
 ```
+```css id="7xq2kd"
+/* =========================================
+   HERO - GLOW & ANIMATION
+========================================= */
+
+.hero-visual {
+  position: relative;
+}
+
+
+/* إضاءة كبيرة خلف الصورة */
+
+.hero-visual::before {
+  content: "";
+
+  position: absolute;
+
+  width: 360px;
+  height: 360px;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(41, 225, 189, .22) 0%,
+      rgba(53, 169, 255, .12) 35%,
+      transparent 70%
+    );
+
+  filter: blur(20px);
+
+  animation: heroGlow 5s ease-in-out infinite;
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* هالة إضافية */
+
+.hero-visual::after {
+  content: "";
+
+  position: absolute;
+
+  width: 240px;
+  height: 240px;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(41,225,189,.15);
+
+  box-shadow:
+    0 0 50px rgba(41,225,189,.08),
+    inset 0 0 50px rgba(53,169,255,.05);
+
+  animation: heroRing 7s linear infinite;
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* الصورة */
+
+.photo-card {
+  position: relative;
+
+  z-index: 3;
+
+  animation:
+    heroPhotoFloat 4s ease-in-out infinite;
+
+  box-shadow:
+    0 0 0 rgba(41,225,189,0);
+
+  transition: .4s ease;
+}
+
+
+/* إضاءة الصورة */
+
+.photo-card::before {
+  content: "";
+
+  position: absolute;
+
+  inset: -2px;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(41,225,189,.65),
+      transparent 35%,
+      transparent 65%,
+      rgba(53,169,255,.5)
+    );
+
+  opacity: .45;
+
+  z-index: -1;
+
+  animation: photoBorder 3s ease-in-out infinite;
+}
+
+
+/* الصورة نفسها */
+
+.photo-card img {
+  position: relative;
+
+  z-index: 2;
+
+  transition: transform .5s ease,
+              filter .5s ease;
+}
+
+.photo-card:hover img {
+  transform: scale(1.03);
+
+  filter:
+    brightness(1.08)
+    saturate(1.08);
+}
+
+.photo-card:hover {
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.35),
+    0 0 45px rgba(41,225,189,.18);
+}
+
+
+/* =========================================
+   FLOATING TAGS
+========================================= */
+
+.floating-tag {
+  z-index: 5;
+
+  animation:
+    tagFloat 3.5s ease-in-out infinite;
+
+  box-shadow:
+    0 10px 35px rgba(0,0,0,.25),
+    0 0 20px rgba(41,225,189,.06);
+
+  transition: .3s ease;
+}
+
+.tag-one {
+  animation-delay: 0s;
+}
+
+.tag-two {
+  animation-delay: .7s;
+}
+
+.tag-three {
+  animation-delay: 1.4s;
+}
+
+.floating-tag:hover {
+  transform: scale(1.06);
+
+  box-shadow:
+    0 15px 45px rgba(0,0,0,.3),
+    0 0 25px rgba(41,225,189,.18);
+}
+
+
+/* =========================================
+   ORBITS
+========================================= */
+
+.orbit {
+  z-index: 1;
+
+  opacity: .7;
+
+  animation:
+    orbitRotate 12s linear infinite;
+}
+
+.orbit-one {
+  animation-duration: 12s;
+}
+
+.orbit-two {
+  animation-duration: 18s;
+
+  animation-direction: reverse;
+}
+
+.orbit
+```
+```css id="7xq2kd"
+/* =========================================
+   HERO - GLOW & ANIMATION
+========================================= */
+
+.hero-visual {
+  position: relative;
+}
+
+
+/* إضاءة كبيرة خلف الصورة */
+
+.hero-visual::before {
+  content: "";
+
+  position: absolute;
+
+  width: 360px;
+  height: 360px;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(41, 225, 189, .22) 0%,
+      rgba(53, 169, 255, .12) 35%,
+      transparent 70%
+    );
+
+  filter: blur(20px);
+
+  animation: heroGlow 5s ease-in-out infinite;
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* هالة إضافية */
+
+.hero-visual::after {
+  content: "";
+
+  position: absolute;
+
+  width: 240px;
+  height: 240px;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(41,225,189,.15);
+
+  box-shadow:
+    0 0 50px rgba(41,225,189,.08),
+    inset 0 0 50px rgba(53,169,255,.05);
+
+  animation: heroRing 7s linear infinite;
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* الصورة */
+
+.photo-card {
+  position: relative;
+
+  z-index: 3;
+
+  animation:
+    heroPhotoFloat 4s ease-in-out infinite;
+
+  box-shadow:
+    0 0 0 rgba(41,225,189,0);
+
+  transition: .4s ease;
+}
+
+
+/* إضاءة الصورة */
+
+.photo-card::before {
+  content: "";
+
+  position: absolute;
+
+  inset: -2px;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(41,225,189,.65),
+      transparent 35%,
+      transparent 65%,
+      rgba(53,169,255,.5)
+    );
+
+  opacity: .45;
+
+  z-index: -1;
+
+  animation: photoBorder 3s ease-in-out infinite;
+}
+
+
+/* الصورة نفسها */
+
+.photo-card img {
+  position: relative;
+
+  z-index: 2;
+
+  transition: transform .5s ease,
+              filter .5s ease;
+}
+
+.photo-card:hover img {
+  transform: scale(1.03);
+
+  filter:
+    brightness(1.08)
+    saturate(1.08);
+}
+
+.photo-card:hover {
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.35),
+    0 0 45px rgba(41,225,189,.18);
+}
+
+
+/* =========================================
+   FLOATING TAGS
+========================================= */
+
+.floating-tag {
+  z-index: 5;
+
+  animation:
+    tagFloat 3.5s ease-in-out infinite;
+
+  box-shadow:
+    0 10px 35px rgba(0,0,0,.25),
+    0 0 20px rgba(41,225,189,.06);
+
+  transition: .3s ease;
+}
+
+.tag-one {
+  animation-delay: 0s;
+}
+
+.tag-two {
+  animation-delay: .7s;
+}
+
+.tag-three {
+  animation-delay: 1.4s;
+}
+
+.floating-tag:hover {
+  transform: scale(1.06);
+
+  box-shadow:
+    0 15px 45px rgba(0,0,0,.3),
+    0 0 25px rgba(41,225,189,.18);
+}
+
+
+/* =========================================
+   ORBITS
+========================================= */
+
+.orbit {
+  z-index: 1;
+
+  opacity: .7;
+
+  animation:
+    orbitRotate 12s linear infinite;
+}
+
+.orbit-one {
+  animation-duration: 12s;
+}
+
+.orbit-two {
+  animation-duration: 18s;
+
+  animation-direction: reverse;
+}
+
+.orbit-three {
+  animation-duration: 25s;
+}
+
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes heroGlow {
+
+  0%, 100% {
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+
+    opacity: .65;
+  }
+
+  50% {
+    transform:
+      translate(-50%, -50%)
+      scale(1.18);
+
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes heroRing {
+
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotate(360deg);
+  }
+
+}
+
+
+@keyframes heroPhotoFloat {
+
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+
+}
+
+
+@keyframes photoBorder {
+
+  0%, 100% {
+    opacity: .3;
+  }
+
+  50% {
+    opacity: .8;
+  }
+
+}
+
+
+@keyframes tagFloat {
+
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-9px);
+  }
+
+}
+
+
+@keyframes orbitRotate {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 800px) {
+
+  .hero-visual::before {
+    width: 280px;
+    height: 280px;
+  }
+
+  .hero-visual::after {
+    width: 190px;
+    height: 190px;
+  }
+
+}
+```
+```css id="7xq2kd"
+/* =========================================
+   HERO - GLOW & ANIMATION
+========================================= */
+
+.hero-visual {
+  position: relative;
+}
+
+
+/* إضاءة كبيرة خلف الصورة */
+
+.hero-visual::before {
+  content: "";
+
+  position: absolute;
+
+  width: 360px;
+  height: 360px;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(41, 225, 189, .22) 0%,
+      rgba(53, 169, 255, .12) 35%,
+      transparent 70%
+    );
+
+  filter: blur(20px);
+
+  animation: heroGlow 5s ease-in-out infinite;
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* هالة إضافية */
+
+.hero-visual::after {
+  content: "";
+
+  position: absolute;
+
+  width: 240px;
+  height: 240px;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(41,225,189,.15);
+
+  box-shadow:
+    0 0 50px rgba(41,225,189,.08),
+    inset 0 0 50px rgba(53,169,255,.05);
+
+  animation: heroRing 7s linear infinite;
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* الصورة */
+
+.photo-card {
+  position: relative;
+
+  z-index: 3;
+
+  animation:
+    heroPhotoFloat 4s ease-in-out infinite;
+
+  box-shadow:
+    0 0 0 rgba(41,225,189,0);
+
+  transition: .4s ease;
+}
+
+
+/* إضاءة الصورة */
+
+.photo-card::before {
+  content: "";
+
+  position: absolute;
+
+  inset: -2px;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(41,225,189,.65),
+      transparent 35%,
+      transparent 65%,
+      rgba(53,169,255,.5)
+    );
+
+  opacity: .45;
+
+  z-index: -1;
+
+  animation: photoBorder 3s ease-in-out infinite;
+}
+
+
+/* الصورة نفسها */
+
+.photo-card img {
+  position: relative;
+
+  z-index: 2;
+
+  transition: transform .5s ease,
+              filter .5s ease;
+}
+
+.photo-card:hover img {
+  transform: scale(1.03);
+
+  filter:
+    brightness(1.08)
+    saturate(1.08);
+}
+
+.photo-card:hover {
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.35),
+    0 0 45px rgba(41,225,189,.18);
+}
+
+
+/* =========================================
+   FLOATING TAGS
+========================================= */
+
+.floating-tag {
+  z-index: 5;
+
+  animation:
+    tagFloat 3.5s ease-in-out infinite;
+
+  box-shadow:
+    0 10px 35px rgba(0,0,0,.25),
+    0 0 20px rgba(41,225,189,.06);
+
+  transition: .3s ease;
+}
+
+.tag-one {
+  animation-delay: 0s;
+}
+
+.tag-two {
+  animation-delay: .7s;
+}
+
+.tag-three {
+  animation-delay: 1.4s;
+}
+
+.floating-tag:hover {
+  transform: scale(1.06);
+
+  box-shadow:
+    0 15px 45px rgba(0,0,0,.3),
+    0 0 25px rgba(41,225,189,.18);
+}
+
+
+/* =========================================
+   ORBITS
+========================================= */
+
+.orbit {
+  z-index: 1;
+
+  opacity: .7;
+
+  animation:
+    orbitRotate 12s linear infinite;
+}
+
+.orbit-one {
+  animation-duration: 12s;
+}
+
+.orbit-two {
+  animation-duration: 18s;
+
+  animation-direction: reverse;
+}
+
+.orbit-three {
+  animation-duration: 25s;
+}
+
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes heroGlow {
+
+  0%, 100% {
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+
+    opacity: .65;
+  }
+
+  50% {
+    transform:
+      translate(-50%, -50%)
+      scale(1.18);
+
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes heroRing {
+
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotate(360deg);
+  }
+
+}
+
+
+@keyframes heroPhotoFloat {
+
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+
+}
+
+
+@keyframes photoBorder {
+
+  0%, 100% {
+    opacity: .3;
+  }
+
+  50% {
+    opacity: .8;
+  }
+
+}
+
+
+@keyframes tagFloat {
+
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-9px);
+  }
+
+}
+
+
+@keyframes orbitRotate {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 800px) {
+
+  .hero-visual::before {
+    width: 280px;
+    height: 280px;
+  }
+
+  .hero-visual::after {
+    width: 190px;
+    height: 190px;
+  }
+
+}
+```
