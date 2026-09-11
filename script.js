@@ -1,46 +1,46 @@
 ```javascript
-/* =========================================================
-   DR. MOHAMED ALI
-   MAIN JAVASCRIPT
-========================================================= */
-
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* =======================================================
-     ELEMENTS
-  ======================================================= */
+  /* =========================================================
+     HELPERS
+  ========================================================= */
 
-  const menuBtn = document.getElementById("menuBtn");
-  const nav = document.getElementById("nav");
-  const header = document.querySelector(".header");
-  const particlesContainer = document.getElementById("particles");
+  const $ = (selector, parent = document) =>
+    parent.querySelector(selector);
+
+  const $$ = (selector, parent = document) =>
+    [...parent.querySelectorAll(selector)];
+
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
 
 
-  /* =======================================================
+  /* =========================================================
      MOBILE MENU
-  ======================================================= */
+  ========================================================= */
+
+  const menuBtn = $("#menuBtn");
+  const nav = $("#nav");
 
   if (menuBtn && nav) {
 
+    menuBtn.setAttribute("aria-expanded", "false");
+
     menuBtn.addEventListener("click", () => {
 
-      nav.classList.toggle("active");
-
-      const isOpen = nav.classList.contains("active");
+      const opened = nav.classList.toggle("active");
 
       menuBtn.setAttribute(
         "aria-expanded",
-        isOpen ? "true" : "false"
+        opened ? "true" : "false"
       );
 
-      menuBtn.innerHTML = isOpen ? "✕" : "☰";
+      menuBtn.textContent = opened ? "✕" : "☰";
 
     });
 
-
-    /* إغلاق القائمة عند الضغط على أي رابط */
-
-    nav.querySelectorAll("a").forEach(link => {
+    $$("a", nav).forEach(link => {
 
       link.addEventListener("click", () => {
 
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
           "false"
         );
 
-        menuBtn.innerHTML = "☰";
+        menuBtn.textContent = "☰";
 
       });
 
@@ -60,23 +60,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  /* =======================================================
-     HEADER SCROLL EFFECT
-  ======================================================= */
+  /* =========================================================
+     HEADER
+  ========================================================= */
+
+  const header = $(".header");
 
   function updateHeader() {
 
     if (!header) return;
 
-    if (window.scrollY > 40) {
-
-      header.classList.add("scrolled");
-
-    } else {
-
-      header.classList.remove("scrolled");
-
-    }
+    header.classList.toggle(
+      "scrolled",
+      window.scrollY > 40
+    );
 
   }
 
@@ -89,87 +86,157 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
 
-  /* =======================================================
-     HERO INTRO
-  ======================================================= */
+  /* =========================================================
+     HERO CINEMATIC INTRO
+  ========================================================= */
 
-  const heroContent = document.querySelector(".hero-content");
+  const hero = $(".hero");
+  const heroContent = $(".hero-content");
+  const heroVisual = $(".hero-visual");
 
   if (heroContent) {
 
-    heroContent.classList.add("hero-sequence");
+    heroContent.classList.add("cinematic-hero");
 
-  }
+    const eyebrow = $(".eyebrow", heroContent);
+    const title = $("h1", heroContent);
+    const roles = $(".roles", heroContent);
+    const description = $(".hero-text", heroContent);
+    const actions = $(".hero-actions", heroContent);
+    const stats = $(".stats", heroContent);
 
+    [
+      eyebrow,
+      title,
+      roles,
+      description,
+      actions,
+      stats
+    ].forEach((element, index) => {
 
-  /* =======================================================
-     ANIMATED ROLES
-  ======================================================= */
+      if (!element) return;
 
-  const rolesContainer = document.querySelector(".roles");
+      element.classList.add("hero-item");
 
-  if (rolesContainer) {
-
-    const roleElements = Array.from(
-      rolesContainer.querySelectorAll("span")
-    );
-
-    /*
-      إذا كان الـHTML يحتوي على:
-      طبيب × مبرمج × متداول
-
-      سنجعل الكلمات تظهر بالتتابع.
-    */
-
-    roleElements.forEach((role, index) => {
-
-      role.classList.add("animated-role");
-
-      role.style.transitionDelay =
-        `${index * 0.15}s`;
+      element.style.setProperty(
+        "--hero-delay",
+        `${0.25 + index * 0.16}s`
+      );
 
     });
 
-    setTimeout(() => {
+  }
 
-      roleElements.forEach(role => {
 
-        role.classList.add("show");
+  /* =========================================================
+     HERO TITLE LETTER REVEAL
+  ========================================================= */
 
-      });
+  const heroTitle = $(".hero h1");
 
-    }, 500);
+  if (heroTitle && !reduceMotion) {
+
+    const originalHTML = heroTitle.innerHTML;
+
+    /*
+      نترك الـHTML الأصلي كما هو لأن كلمة "محمد"
+      عربية، ونستخدم animation على الـtitle نفسه.
+    */
+
+    heroTitle.classList.add("title-reveal");
 
   }
 
 
-  /* =======================================================
+  /* =========================================================
+     ROLES — تظهر واحدة وراء الثانية
+  ========================================================= */
+
+  const roles = $(".roles");
+
+  if (roles) {
+
+    const roleSpans = $$(":scope > span", roles);
+
+    roleSpans.forEach((role, index) => {
+
+      role.classList.add("role-reveal");
+
+      role.style.setProperty(
+        "--role-delay",
+        `${0.9 + index * 0.35}s`
+      );
+
+    });
+
+  }
+
+
+  /* =========================================================
+     HERO VISUAL
+  ========================================================= */
+
+  if (heroVisual) {
+
+    heroVisual.classList.add("cinematic-visual");
+
+    const photo = $(".photo-card", heroVisual);
+    const tags = $$(".floating-tag", heroVisual);
+    const orbits = $$(".orbit", heroVisual);
+
+    if (photo) {
+
+      photo.style.setProperty(
+        "--visual-delay",
+        "0.65s"
+      );
+
+    }
+
+    tags.forEach((tag, index) => {
+
+      tag.classList.add("visual-tag-reveal");
+
+      tag.style.setProperty(
+        "--tag-delay",
+        `${1.15 + index * 0.22}s`
+      );
+
+    });
+
+    orbits.forEach((orbit, index) => {
+
+      orbit.style.animationDelay =
+        `${index * -.8}s`;
+
+    });
+
+  }
+
+
+  /* =========================================================
      PARTICLES
-  ======================================================= */
+  ========================================================= */
+
+  const particlesContainer = $("#particles");
 
   function createParticles() {
 
     if (!particlesContainer) return;
 
-    const isMobile = window.innerWidth <= 850;
-
-    const particleCount = isMobile ? 25 : 55;
-
     particlesContainer.innerHTML = "";
 
-    for (let i = 0; i < particleCount; i++) {
+    const amount =
+      window.innerWidth <= 600 ? 22 :
+      window.innerWidth <= 850 ? 32 :
+      60;
 
-      const particle = document.createElement("span");
+    for (let i = 0; i < amount; i++) {
+
+      const particle =
+        document.createElement("span");
 
       particle.className = "particle";
-
-      const size =
-        Math.random() > .8
-          ? 3
-          : 2;
-
-      particle.style.width = `${size}px`;
-      particle.style.height = `${size}px`;
 
       particle.style.left =
         `${Math.random() * 100}%`;
@@ -177,16 +244,24 @@ document.addEventListener("DOMContentLoaded", () => {
       particle.style.top =
         `${Math.random() * 100}%`;
 
+      const size =
+        Math.random() > .8 ? 3 : 2;
+
+      particle.style.width =
+        `${size}px`;
+
+      particle.style.height =
+        `${size}px`;
+
       particle.style.animationDuration =
-        `${4 + Math.random() * 7}s`;
+        `${5 + Math.random() * 8}s`;
 
       particle.style.animationDelay =
-        `${Math.random() * -8}s`;
+        `${Math.random() * -10}s`;
 
-      particle.style.opacity =
-        `${0.15 + Math.random() * 0.4}`;
-
-      particlesContainer.appendChild(particle);
+      particlesContainer.appendChild(
+        particle
+      );
 
     }
 
@@ -195,255 +270,266 @@ document.addEventListener("DOMContentLoaded", () => {
   createParticles();
 
 
-  /* =======================================================
+  /* =========================================================
      SCROLL REVEAL
-  ======================================================= */
+  ========================================================= */
 
-  const revealElements = document.querySelectorAll(
-    ".section-label, " +
-    ".section-title, " +
-    ".about-box, " +
-    ".field-card, " +
-    ".skill-box, " +
-    ".vision-card, " +
-    ".vision-bottom, " +
-    ".quote, " +
-    ".contact-card"
-  );
+  const revealTargets = $$(`
+    .section-label,
+    .section-title,
+    .about-box,
+    .field-card,
+    .skill-box,
+    .vision-card,
+    .vision-bottom,
+    .quote,
+    .contact-card
+  `);
 
+  revealTargets.forEach(element => {
 
-  revealElements.forEach((element, index) => {
-
-    element.classList.add("reveal");
-
-    /*
-      إضافة تأخير بسيط للكروت
-    */
-
-    if (
-      element.classList.contains("field-card") ||
-      element.classList.contains("skill-box") ||
-      element.classList.contains("vision-card")
-    ) {
-
-      const delay =
-        index % 3;
-
-      if (delay === 1) {
-        element.classList.add("reveal-delay-1");
-      }
-
-      if (delay === 2) {
-        element.classList.add("reveal-delay-2");
-      }
-
-    }
+    element.classList.add("cinematic-reveal");
 
   });
 
 
-  const revealObserver = new IntersectionObserver(
-    (entries, observer) => {
+  if ("IntersectionObserver" in window) {
 
-      entries.forEach(entry => {
+    const revealObserver =
+      new IntersectionObserver(
+        entries => {
 
-        if (entry.isIntersecting) {
+          entries.forEach(entry => {
 
-          entry.target.classList.add("show");
+            if (!entry.isIntersecting) return;
 
-          observer.unobserve(entry.target);
+            entry.target.classList.add(
+              "cinematic-visible"
+            );
 
+            revealObserver.unobserve(
+              entry.target
+            );
+
+          });
+
+        },
+        {
+          threshold: 0.12,
+          rootMargin: "0px 0px -70px 0px"
         }
-
-      });
-
-    },
-    {
-      threshold: 0.12,
-      rootMargin: "0px 0px -50px 0px"
-    }
-  );
-
-
-  revealElements.forEach(element => {
-
-    revealObserver.observe(element);
-
-  });
-
-
-  /* =======================================================
-     SKILL PROGRESS
-  ======================================================= */
-
-  const progressBars =
-    document.querySelectorAll(".progress i");
-
-
-  progressBars.forEach(bar => {
-
-    const width =
-      bar.getAttribute("data-width");
-
-    if (width) {
-
-      bar.style.setProperty(
-        "--progress-width",
-        width
       );
 
-    }
 
-  });
+    revealTargets.forEach(element => {
 
-
-  const progressObserver = new IntersectionObserver(
-    (entries, observer) => {
-
-      entries.forEach(entry => {
-
-        if (!entry.isIntersecting) return;
-
-        const bars =
-          entry.target.querySelectorAll(".progress i");
-
-        bars.forEach((bar, index) => {
-
-          setTimeout(() => {
-
-            bar.classList.add("loaded");
-
-          }, index * 180);
-
-        });
-
-        observer.unobserve(entry.target);
-
-      });
-
-    },
-    {
-      threshold: 0.25
-    }
-  );
-
-
-  document
-    .querySelectorAll(".skills-grid")
-    .forEach(element => {
-
-      progressObserver.observe(element);
+      revealObserver.observe(element);
 
     });
 
+  } else {
 
-  /* =======================================================
-     MARKET CHART
-  ======================================================= */
+    revealTargets.forEach(element => {
 
-  const charts =
-    document.querySelectorAll(".chart");
+      element.classList.add(
+        "cinematic-visible"
+      );
+
+    });
+
+  }
 
 
-  const chartObserver = new IntersectionObserver(
-    (entries, observer) => {
+  /* =========================================================
+     STAGGER CARDS
+  ========================================================= */
 
-      entries.forEach(entry => {
+  [
+    ".field-card",
+    ".vision-card",
+    ".skill-box"
+  ].forEach(selector => {
 
-        if (!entry.isIntersecting) return;
+    $$(selector).forEach((card, index) => {
 
-        const chart =
-          entry.target;
+      card.style.setProperty(
+        "--stagger-delay",
+        `${index * 0.14}s`
+      );
+
+    });
+
+  });
+
+
+  /* =========================================================
+     ABOUT CONTENT
+  ========================================================= */
+
+  const aboutBox = $(".about-box");
+
+  if (aboutBox) {
+
+    const number = $(".about-number", aboutBox);
+    const content = $(".about-content", aboutBox);
+
+    if (number) {
+      number.classList.add("about-number-reveal");
+    }
+
+    if (content) {
+      content.classList.add("about-content-reveal");
+    }
+
+  }
+
+
+  /* =========================================================
+     SKILL BARS
+  ========================================================= */
+
+  $$(".progress i").forEach(bar => {
+
+    const width =
+      bar.dataset.width || "0%";
+
+    bar.style.setProperty(
+      "--progress-width",
+      width
+    );
+
+  });
+
+
+  let skillsAnimated = false;
+
+  const skillsSection =
+    $(".skills");
+
+  function animateSkills() {
+
+    if (skillsAnimated) return;
+
+    skillsAnimated = true;
+
+    $$(".progress i").forEach(
+      (bar, index) => {
+
+        setTimeout(() => {
+
+          bar.classList.add("loaded");
+
+        }, 250 + index * 180);
+
+      }
+    );
+
+    const chart = $(".chart");
+
+    if (chart) {
+
+      setTimeout(() => {
 
         chart.classList.add("loaded");
 
-        const bars =
-          chart.querySelectorAll("div");
+      }, 450);
 
-        bars.forEach((bar, index) => {
-
-          bar.style.transitionDelay =
-            `${index * 100}ms`;
-
-        });
-
-        observer.unobserve(chart);
-
-      });
-
-    },
-    {
-      threshold: 0.25
     }
-  );
+
+  }
 
 
-  charts.forEach(chart => {
+  if (
+    skillsSection &&
+    "IntersectionObserver" in window
+  ) {
 
-    chartObserver.observe(chart);
+    const skillObserver =
+      new IntersectionObserver(
+        entries => {
 
-  });
+          entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+
+              animateSkills();
+
+              skillObserver.unobserve(
+                entry.target
+              );
+
+            }
+
+          });
+
+        },
+        {
+          threshold: 0.2
+        }
+      );
+
+    skillObserver.observe(
+      skillsSection
+    );
+
+  }
 
 
-  /* =======================================================
-     ACTIVE NAV LINK
-  ======================================================= */
+  /* =========================================================
+     ACTIVE NAV
+  ========================================================= */
 
   const navLinks =
-    document.querySelectorAll(".nav a");
+    $$(".nav a");
 
   const sections =
-    document.querySelectorAll("main section[id]");
-
+    $$("main section[id]");
 
   function updateActiveNav() {
 
-    let currentSection = "";
+    if (!sections.length) return;
 
-    const scrollPosition =
-      window.scrollY + 180;
+    let current = "";
+
+    const position =
+      window.scrollY + 220;
 
     sections.forEach(section => {
 
-      const sectionTop =
-        section.offsetTop;
-
-      const sectionHeight =
-        section.offsetHeight;
-
       if (
-        scrollPosition >= sectionTop &&
-        scrollPosition <
-          sectionTop + sectionHeight
+        position >= section.offsetTop &&
+        position <
+          section.offsetTop +
+          section.offsetHeight
       ) {
 
-        currentSection =
-          section.getAttribute("id");
+        current =
+          section.id;
 
       }
 
     });
 
-
     navLinks.forEach(link => {
 
-      link.classList.remove("active-link");
-
-      const target =
-        link.getAttribute("href");
+      link.classList.remove(
+        "active-link"
+      );
 
       if (
-        target === `#${currentSection}`
+        link.getAttribute("href") ===
+        `#${current}`
       ) {
 
-        link.classList.add("active-link");
+        link.classList.add(
+          "active-link"
+        );
 
       }
 
     });
 
   }
-
 
   updateActiveNav();
 
@@ -454,97 +540,136 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
 
-  /* =======================================================
-     VISION CARDS STAGGER
-  ======================================================= */
-
-  const visionCards =
-    document.querySelectorAll(".vision-card");
-
-
-  visionCards.forEach((card, index) => {
-
-    card.style.animationDelay =
-      `${index * 0.25}s`;
-
-  });
-
-
-  /* =======================================================
+  /* =========================================================
      SMOOTH SCROLL
-  ======================================================= */
+  ========================================================= */
 
-  document
-    .querySelectorAll('a[href^="#"]')
-    .forEach(link => {
+  $$('a[href^="#"]').forEach(link => {
 
-      link.addEventListener("click", event => {
+    link.addEventListener("click", event => {
 
-        const targetId =
-          link.getAttribute("href");
+      const id =
+        link.getAttribute("href");
 
-        if (
-          !targetId ||
-          targetId === "#"
-        ) {
-          return;
-        }
+      if (!id || id === "#") return;
 
-        const target =
-          document.querySelector(targetId);
+      const target =
+        document.querySelector(id);
 
-        if (!target) return;
+      if (!target) return;
 
-        event.preventDefault();
+      event.preventDefault();
 
-        const headerHeight =
-          header
-            ? header.offsetHeight
-            : 0;
+      const headerHeight =
+        header?.offsetHeight || 0;
 
-        const targetPosition =
-          target.getBoundingClientRect().top +
-          window.scrollY -
-          headerHeight -
-          20;
+      const position =
+        target.getBoundingClientRect().top +
+        window.scrollY -
+        headerHeight -
+        15;
 
-        window.scrollTo({
-          top: targetPosition,
-          behavior: "smooth"
-        });
-
+      window.scrollTo({
+        top: position,
+        behavior: reduceMotion
+          ? "auto"
+          : "smooth"
       });
 
     });
 
+  });
 
-  /* =======================================================
-     PHOTO PARALLAX
-  ======================================================= */
 
-  const photoCard =
-    document.querySelector(".photo-card");
-
+  /* =========================================================
+     MOUSE PARALLAX
+  ========================================================= */
 
   if (
-    photoCard &&
+    hero &&
+    heroVisual &&
+    !reduceMotion &&
     window.matchMedia(
-      "(min-width: 851px)"
+      "(pointer:fine)"
     ).matches
   ) {
 
-    const visual =
-      document.querySelector(".hero-visual");
+    const photo =
+      $(".photo-card", heroVisual);
+
+    heroVisual.addEventListener(
+      "mousemove",
+      event => {
+
+        const rect =
+          heroVisual.getBoundingClientRect();
+
+        const x =
+          event.clientX - rect.left;
+
+        const y =
+          event.clientY - rect.top;
+
+        const centerX =
+          rect.width / 2;
+
+        const centerY =
+          rect.height / 2;
+
+        const rotateY =
+          (x - centerX) / 45;
+
+        const rotateX =
+          (centerY - y) / 45;
+
+        if (photo) {
+
+          photo.style.transform =
+            `translateY(-5px)
+             rotateX(${rotateX}deg)
+             rotateY(${rotateY}deg)`;
+
+        }
+
+      }
+    );
 
 
-    if (visual) {
+    heroVisual.addEventListener(
+      "mouseleave",
+      () => {
 
-      visual.addEventListener(
+        if (photo) {
+
+          photo.style.transform = "";
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* =========================================================
+     CARD TILT
+  ========================================================= */
+
+  if (
+    !reduceMotion &&
+    window.matchMedia(
+      "(pointer:fine)"
+    ).matches
+  ) {
+
+    $$(".field-card, .vision-card").forEach(card => {
+
+      card.addEventListener(
         "mousemove",
         event => {
 
           const rect =
-            visual.getBoundingClientRect();
+            card.getBoundingClientRect();
 
           const x =
             event.clientX - rect.left;
@@ -552,80 +677,55 @@ document.addEventListener("DOMContentLoaded", () => {
           const y =
             event.clientY - rect.top;
 
-          const centerX =
-            rect.width / 2;
-
-          const centerY =
-            rect.height / 2;
+          const rotateY =
+            (x - rect.width / 2) / 30;
 
           const rotateX =
-            (y - centerY) / 35;
+            (rect.height / 2 - y) / 30;
 
-          const rotateY =
-            (centerX - x) / 35;
-
-          photoCard.style.transform =
-            `translateY(-4px)
+          card.style.transform =
+            `translateY(-10px)
+             perspective(800px)
              rotateX(${rotateX}deg)
-             rotateY(${rotateY}deg)`;
+             rotateY(${rotateY}deg)
+             scale(1.015)`;
 
         }
       );
 
 
-      visual.addEventListener(
+      card.addEventListener(
         "mouseleave",
         () => {
 
-          photoCard.style.transform = "";
+          card.style.transform = "";
 
         }
       );
 
-    }
+    });
 
   }
 
 
-  /* =======================================================
-     CONTACT BUTTON RIPPLE
-  ======================================================= */
+  /* =========================================================
+     BUTTON RIPPLE
+  ========================================================= */
 
-  const interactiveButtons =
-    document.querySelectorAll(
-      ".btn, .contact-btn"
-    );
-
-
-  interactiveButtons.forEach(button => {
+  $$(".btn, .contact-btn").forEach(button => {
 
     button.addEventListener(
       "click",
-      function(event) {
+      event => {
 
         const rect =
-          this.getBoundingClientRect();
+          button.getBoundingClientRect();
 
         const ripple =
           document.createElement("span");
 
-        ripple.style.position =
-          "absolute";
-
-        ripple.style.width =
-          "10px";
-
-        ripple.style.height =
-          "10px";
-
-        ripple.style.borderRadius =
-          "50%";
-
-        ripple.style.background =
-          "rgba(255,255,255,.35)";
-
-        ripple.style.pointerEvents =
-          "none";
+        ripple.className =
+          "button-ripple";
 
         ripple.style.left =
           `${event.clientX - rect.left}px`;
@@ -633,29 +733,15 @@ document.addEventListener("DOMContentLoaded", () => {
         ripple.style.top =
           `${event.clientY - rect.top}px`;
 
-        ripple.style.transform =
-          "translate(-50%,-50%) scale(1)";
-
-        ripple.style.transition =
-          "transform .6s ease, opacity .6s ease";
-
-        this.appendChild(ripple);
-
-        requestAnimationFrame(() => {
-
-          ripple.style.transform =
-            "translate(-50%,-50%) scale(25)";
-
-          ripple.style.opacity =
-            "0";
-
-        });
+        button.appendChild(
+          ripple
+        );
 
         setTimeout(() => {
 
           ripple.remove();
 
-        }, 650);
+        }, 700);
 
       }
     );
@@ -663,89 +749,42 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  /* =======================================================
-     MOUSE GLOW
-  ======================================================= */
+  /* =========================================================
+     QUOTE REVEAL
+  ========================================================= */
 
-  const site =
-    document.querySelector(".site");
+  const quote =
+    $(".quote");
 
+  if (quote) {
 
-  if (
-    site &&
-    window.matchMedia(
-      "(pointer:fine)"
-    ).matches
-  ) {
+    const quoteTitle =
+      $("h2", quote);
 
-    document.addEventListener(
-      "mousemove",
-      event => {
+    const quoteText =
+      $("p", quote);
 
-        const x =
-          (event.clientX / window.innerWidth) * 100;
+    if (quoteTitle) {
+      quoteTitle.classList.add(
+        "quote-text-reveal"
+      );
+    }
 
-        const y =
-          (event.clientY / window.innerHeight) * 100;
-
-        site.style.background = `
-          radial-gradient(
-            circle at ${x}% ${y}%,
-            rgba(0,212,170,.035),
-            transparent 25%
-          ),
-          radial-gradient(
-            circle at 80% 20%,
-            rgba(0,212,170,.08),
-            transparent 30%
-          ),
-          radial-gradient(
-            circle at 15% 70%,
-            rgba(0,140,255,.06),
-            transparent 30%
-          ),
-          #05070b
-        `;
-
-      }
-    );
+    if (quoteText) {
+      quoteText.classList.add(
+        "quote-sub-reveal"
+      );
+    }
 
   }
 
 
-  /* =======================================================
-     RESIZE
-  ======================================================= */
-
-  let resizeTimer;
-
-  window.addEventListener(
-    "resize",
-    () => {
-
-      clearTimeout(resizeTimer);
-
-      resizeTimer = setTimeout(() => {
-
-        createParticles();
-
-      }, 250);
-
-    }
-  );
-
-
-  /* =======================================================
-     WHATSAPP FLOAT BUTTON
-  ======================================================= */
-
-  /*
-    يتم إنشاء الزر تلقائيًا إذا لم يكن موجودًا
-    في الـHTML.
-  */
+  /* =========================================================
+     WHATSAPP FLOAT
+  ========================================================= */
 
   if (
-    !document.querySelector(".whatsapp-float")
+    !$(".whatsapp-float")
   ) {
 
     const whatsapp =
@@ -761,7 +800,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "_blank";
 
     whatsapp.rel =
-      "noopener";
+      "noopener noreferrer";
 
     whatsapp.setAttribute(
       "aria-label",
@@ -769,7 +808,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     whatsapp.innerHTML =
-      "☏";
+      `<span>☏</span>`;
 
     document.body.appendChild(
       whatsapp
@@ -778,103 +817,37 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  /* =======================================================
-     LAZY IMAGE EFFECT
-  ======================================================= */
+  /* =========================================================
+     RESIZE
+  ========================================================= */
 
-  const heroImage =
-    document.querySelector(".photo-card img");
+  let resizeTimer;
 
+  window.addEventListener(
+    "resize",
+    () => {
 
-  if (heroImage) {
+      clearTimeout(resizeTimer);
 
-    heroImage.addEventListener(
-      "load",
-      () => {
+      resizeTimer =
+        setTimeout(() => {
 
-        heroImage.classList.add(
-          "image-loaded"
-        );
+          createParticles();
 
-      }
-    );
+        }, 300);
 
-  }
-
-
-  /* =======================================================
-     REDUCED MOTION
-  ======================================================= */
-
-  const reducedMotion =
-    window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    }
+  );
 
 
-  if (reducedMotion) {
-
-    document
-      .querySelectorAll(
-        ".particle"
-      )
-      .forEach(particle => {
-
-        particle.style.animation =
-          "none";
-
-      });
-
-  }
-
-
-  /* =======================================================
+  /* =========================================================
      CONSOLE
-  ======================================================= */
+  ========================================================= */
 
   console.log(
     "%c DR. MOHAMED ALI ",
-    "background:#00d4aa;color:#04110e;font-size:16px;font-weight:bold;padding:8px 15px;border-radius:5px;"
-  );
-
-  console.log(
-    "%c Doctor × Programmer × Trader ",
-    "color:#00d4aa;font-size:13px;"
+    "background:#00d4aa;color:#04110e;font-size:16px;font-weight:800;padding:8px 14px;border-radius:6px;"
   );
 
 });
-```
-
-ثم أضف هذا السطر **قبل `</body>` مباشرة** في ملف HTML:
-
-```html
-<script src="script.js"></script>
-```
-
-### مهم جدًا
-
-في الـHTML الذي أرسلته يوجد أيضًا قسم `footer` و`whatsapp-float` متوقعين من الـCSS، لكن الـJavaScript أعلاه ينشئ زر واتساب العائم تلقائيًا إذا لم يكن موجودًا.
-
-كذلك عندك مشكلة بسيطة في كود الـHTML الأصلي: وضعت ```html داخل محتوى الملف أكثر من مرة. هذه العلامات **ليست جزءًا من HTML** ويجب حذفها. استخدم فقط:
-
-```html
-<section>
-  ...
-</section>
-```
-
-وليس:
-
-````html
-```html
-<section>
-  ...
-</section>
-````
-
-```
-
-**النتيجة:** بعد إضافة `script.js` سيعمل لديك الـmenu للموبايل، الـscroll reveal، الـactive navigation، نسب المهارات، الرسم البياني، الـparticles، حركة الـHero، تأثير الصورة، الـripple، والـWhatsApp العائم.
-
-إذا أردت، أقدر أيضًا **أرتب لك الملفات الثلاثة `index.html + style.css + script.js` في نسخة نهائية نظيفة ومصححة بالكامل** بحيث تنسخها كما هي وتفتح الموقع مباشرة.
 ```
