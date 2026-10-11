@@ -1,136 +1,909 @@
-(() => {
-  const $ = (selector, root = document) => root.querySelector(selector);
-  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* =========================================================
+   DR. MOHAMED ALI — MAIN JAVASCRIPT
+========================================================= */
 
-  // Intro loader
-  document.body.classList.add('loading');
-  window.addEventListener('load', () => {
-    window.setTimeout(() => {
-      $('#preloader')?.classList.add('done');
-      document.body.classList.remove('loading');
-    }, 500);
-  });
+document.addEventListener("DOMContentLoaded", () => {
 
-  // Header, reading progress, and mobile navigation
-  const header = $('.site-header');
-  const progress = $('#scrollProgress');
-  const menuToggle = $('#menuToggle');
-  const navLinks = $('#navLinks');
-  const navItems = $$('.nav-links a');
+  /* =========================================================
+     MOBILE MENU
+  ========================================================= */
 
-  const onScroll = () => {
-    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    header?.classList.toggle('scrolled', window.scrollY > 24);
-    if (progress) progress.style.width = `${scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0}%`;
-    let current = 'home';
-    $$('main section[id]').forEach(section => {
-      if (window.scrollY >= section.offsetTop - 180) current = section.id;
+  const menuBtn = document.getElementById("menuBtn");
+  const nav = document.getElementById("nav");
+
+  if (menuBtn && nav) {
+
+    menuBtn.addEventListener("click", () => {
+
+      nav.classList.toggle("active");
+
+      const isOpen = nav.classList.contains("active");
+
+      menuBtn.setAttribute(
+        "aria-label",
+        isOpen ? "إغلاق القائمة" : "فتح القائمة"
+      );
+      menuBtn.setAttribute("aria-expanded", String(isOpen));
+
+      menuBtn.innerHTML = isOpen ? "✕" : "☰";
+
     });
-    navItems.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${current}`));
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
 
-  menuToggle?.addEventListener('click', () => {
-    const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
-    menuToggle.setAttribute('aria-expanded', String(!isOpen));
-    navLinks?.classList.toggle('open', !isOpen);
-  });
-  navItems.forEach(link => link.addEventListener('click', () => {
-    menuToggle?.setAttribute('aria-expanded', 'false');
-    navLinks?.classList.remove('open');
-  }));
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') {
-      menuToggle?.setAttribute('aria-expanded', 'false');
-      navLinks?.classList.remove('open');
+
+    // إغلاق القائمة عند الضغط على أي رابط
+    nav.querySelectorAll("a").forEach(link => {
+
+      link.addEventListener("click", () => {
+
+        nav.classList.remove("active");
+
+        menuBtn.innerHTML = "☰";
+
+        menuBtn.setAttribute(
+          "aria-label",
+          "فتح القائمة"
+        );
+        menuBtn.setAttribute("aria-expanded", "false");
+
+      });
+
+    });
+
+  }
+
+
+  /* =========================================================
+     HEADER SCROLL EFFECT
+  ========================================================= */
+
+  const header = document.querySelector(".header");
+
+  function updateHeader() {
+
+    if (!header) return;
+
+    if (window.scrollY > 40) {
+      header.classList.add("scrolled");
+    } else {
+      header.classList.remove("scrolled");
     }
+
+  }
+
+  window.addEventListener("scroll", updateHeader, {
+    passive: true
   });
 
-  // Reveal sections as they enter the viewport
-  const revealItems = $$('.reveal');
-  if ('IntersectionObserver' in window && !reduceMotion) {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -35px 0px' });
-    revealItems.forEach(item => observer.observe(item));
-  } else {
-    revealItems.forEach(item => item.classList.add('visible'));
+  updateHeader();
+
+
+  /* =========================================================
+     HERO TEXT SEQUENCE
+     ظهور عناصر الـ Hero واحد وراء الثاني
+  ========================================================= */
+
+  const heroItems = [
+
+    ".hero .eyebrow",
+    ".hero h1",
+    ".hero .roles",
+    ".hero .hero-text",
+    ".hero .hero-actions",
+    ".hero .stats"
+
+  ];
+
+  heroItems.forEach((selector, index) => {
+
+    const element = document.querySelector(selector);
+
+    if (!element) return;
+
+    element.classList.add("hero-sequence");
+
+    element.style.animationDelay =
+      `${0.15 + index * 0.18}s`;
+
+  });
+
+
+  /* =========================================================
+     ROLE ANIMATION
+     طبيب × مبرمج × متداول
+  ========================================================= */
+
+  const roles = [
+    "طبيب",
+    "مبرمج",
+    "متداول"
+  ];
+
+  const rolesContainer = document.querySelector(".roles");
+
+  if (rolesContainer) {
+
+    const spans = rolesContainer.querySelectorAll("span");
+
+    if (spans.length >= 3) {
+
+      let roleIndex = 0;
+
+      setInterval(() => {
+
+        spans.forEach((span, index) => {
+
+          span.classList.remove("animated-role");
+
+          if (index === roleIndex) {
+            span.classList.add("animated-role");
+
+            requestAnimationFrame(() => {
+              span.classList.add("show");
+            });
+          }
+
+        });
+
+        roleIndex++;
+
+        if (roleIndex >= spans.length) {
+          roleIndex = 0;
+        }
+
+      }, 2200);
+
+    }
+
   }
 
-  // Sequential typing effect in the hero
-  const typed = $('#typedText');
-  const phrases = ['أبني المستقبل', 'أتعلم بلا حدود', 'أحوّل الأفكار لواقع', 'أستكشف عوالم جديدة'];
-  if (typed && !reduceMotion) {
-    let phraseIndex = 0, charIndex = phrases[0].length, deleting = true;
-    const typeLoop = () => {
-      const phrase = phrases[phraseIndex];
-      if (deleting) {
-        charIndex--;
-        typed.textContent = phrase.slice(0, Math.max(0, charIndex));
-      } else {
-        charIndex++;
-        typed.textContent = phrases[phraseIndex].slice(0, charIndex);
-      }
-      let delay = deleting ? 38 : 68;
-      if (!deleting && charIndex >= phrases[phraseIndex].length) {
-        deleting = true; delay = 1450;
-      } else if (deleting && charIndex <= 0) {
-        deleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; delay = 300;
-      }
-      window.setTimeout(typeLoop, delay);
-    };
-    window.setTimeout(typeLoop, 1700);
+
+  /* =========================================================
+     PARTICLES
+  ========================================================= */
+
+  const particlesContainer =
+    document.getElementById("particles");
+
+  if (particlesContainer) {
+
+    const particleCount =
+      window.innerWidth <= 600 ? 25 : 55;
+
+    for (let i = 0; i < particleCount; i++) {
+
+      const particle =
+        document.createElement("span");
+
+      particle.className = "particle";
+
+      particle.style.left =
+        `${Math.random() * 100}%`;
+
+      particle.style.top =
+        `${Math.random() * 100}%`;
+
+      const size =
+        Math.random() * 2 + 1;
+
+      particle.style.width =
+        `${size}px`;
+
+      particle.style.height =
+        `${size}px`;
+
+      particle.style.animationDuration =
+        `${4 + Math.random() * 8}s`;
+
+      particle.style.animationDelay =
+        `${Math.random() * -8}s`;
+
+      particlesContainer.appendChild(particle);
+
+    }
+
   }
 
-  // Lightweight animated starfield — no external library required
-  const canvas = $('#starfield');
-  const ctx = canvas?.getContext('2d');
-  if (canvas && ctx && !reduceMotion) {
-    let width = 0, height = 0, stars = [], raf = 0;
-    const makeStars = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      width = window.innerWidth; height = window.innerHeight;
-      canvas.width = Math.floor(width * dpr); canvas.height = Math.floor(height * dpr);
-      canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.min(110, Math.floor((width * height) / 11500));
-      stars = Array.from({ length: count }, () => ({
-        x: Math.random() * width, y: Math.random() * height,
-        radius: Math.random() * 1.1 + .2, alpha: Math.random() * .5 + .12,
-        speed: Math.random() * .12 + .025, phase: Math.random() * Math.PI * 2
-      }));
-    };
-    const draw = time => {
-      ctx.clearRect(0, 0, width, height);
-      stars.forEach(star => {
-        const pulse = .72 + Math.sin(time * .0007 + star.phase) * .28;
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(191, 255, 222, ${star.alpha * pulse})`;
-        ctx.fill();
-        star.y -= star.speed;
-        if (star.y < -2) { star.y = height + 2; star.x = Math.random() * width; }
-      });
-      raf = requestAnimationFrame(draw);
-    };
-    makeStars();
-    raf = requestAnimationFrame(draw);
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(makeStars, 150);
-    }, { passive: true });
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) cancelAnimationFrame(raf);
-      else raf = requestAnimationFrame(draw);
+
+  /* =========================================================
+     SCROLL REVEAL
+     العناصر تظهر واحدة وراء الثانية
+  ========================================================= */
+
+  const revealSelectors = [
+
+    ".section-label",
+    ".section-title",
+    ".about-box",
+    ".field-card",
+    ".skill-box",
+    ".vision-card",
+    ".vision-bottom",
+    ".quote",
+    ".contact-card"
+
+  ];
+
+  const revealElements = [];
+
+  revealSelectors.forEach(selector => {
+
+    document.querySelectorAll(selector).forEach(element => {
+
+      element.classList.add("reveal");
+
+      revealElements.push(element);
+
     });
+
+  });
+
+
+  /* =========================================================
+     REVEAL OBSERVER
+  ========================================================= */
+
+  const revealObserver =
+    new IntersectionObserver(
+
+      (entries) => {
+
+        entries.forEach(entry => {
+
+          if (!entry.isIntersecting) return;
+
+          const element = entry.target;
+
+          element.classList.add("show");
+
+          revealObserver.unobserve(element);
+
+        });
+
+      },
+
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -60px 0px"
+      }
+
+    );
+
+
+  revealElements.forEach(element => {
+
+    revealObserver.observe(element);
+
+  });
+
+
+  /* =========================================================
+     STAGGER ANIMATION
+     الكروت تظهر بالتتابع
+  ========================================================= */
+
+  const staggerGroups = [
+
+    ".field-grid .field-card",
+    ".skills-grid .skill-box",
+    ".vision-grid .vision-card"
+
+  ];
+
+  staggerGroups.forEach(selector => {
+
+    const items =
+      document.querySelectorAll(selector);
+
+    items.forEach((item, index) => {
+
+      item.style.transitionDelay =
+        `${index * 0.15}s`;
+
+    });
+
+  });
+
+
+  /* =========================================================
+     SKILLS PROGRESS
+  ========================================================= */
+
+  const progressBars =
+    document.querySelectorAll(".progress i");
+
+
+  progressBars.forEach(bar => {
+
+    const width =
+      bar.getAttribute("data-width");
+
+    if (width) {
+
+      bar.style.setProperty(
+        "--progress-width",
+        width
+      );
+
+    }
+
+  });
+
+
+  const progressObserver =
+    new IntersectionObserver(
+
+      entries => {
+
+        entries.forEach(entry => {
+
+          if (!entry.isIntersecting) return;
+
+          const bars =
+            entry.target.querySelectorAll(".progress i");
+
+          bars.forEach((bar, index) => {
+
+            setTimeout(() => {
+
+              bar.classList.add("loaded");
+
+            }, index * 180);
+
+          });
+
+          progressObserver.unobserve(entry.target);
+
+        });
+
+      },
+
+      {
+        threshold: 0.3
+      }
+
+    );
+
+
+  document.querySelectorAll(".skills-grid")
+    .forEach(section => {
+
+      progressObserver.observe(section);
+
+    });
+
+
+  /* =========================================================
+     TRADING CHART ANIMATION
+  ========================================================= */
+
+  const charts =
+    document.querySelectorAll(".chart");
+
+
+  const chartObserver =
+    new IntersectionObserver(
+
+      entries => {
+
+        entries.forEach(entry => {
+
+          if (!entry.isIntersecting) return;
+
+          entry.target.classList.add("loaded");
+
+          chartObserver.unobserve(entry.target);
+
+        });
+
+      },
+
+      {
+        threshold: 0.35
+      }
+
+    );
+
+
+  charts.forEach(chart => {
+
+    chartObserver.observe(chart);
+
+  });
+
+
+  /* =========================================================
+     ACTIVE NAV LINK
+  ========================================================= */
+
+  const sections =
+    document.querySelectorAll("main section[id]");
+
+  const navLinks =
+    document.querySelectorAll(".nav a");
+
+
+  const sectionObserver =
+    new IntersectionObserver(
+
+      entries => {
+
+        entries.forEach(entry => {
+
+          if (!entry.isIntersecting) return;
+
+          const id =
+            entry.target.getAttribute("id");
+
+          navLinks.forEach(link => {
+
+            link.classList.remove("active-link");
+
+            if (
+              link.getAttribute("href") === `#${id}`
+            ) {
+
+              link.classList.add("active-link");
+
+            }
+
+          });
+
+        });
+
+      },
+
+      {
+        threshold: 0.35
+      }
+
+    );
+
+
+  sections.forEach(section => {
+
+    sectionObserver.observe(section);
+
+  });
+
+
+  /* =========================================================
+     SMOOTH SCROLL
+  ========================================================= */
+
+  document.querySelectorAll('a[href^="#"]')
+    .forEach(link => {
+
+      link.addEventListener("click", event => {
+
+        const targetId =
+          link.getAttribute("href");
+
+        if (!targetId || targetId === "#") return;
+
+        const target =
+          document.querySelector(targetId);
+
+        if (!target) return;
+
+        event.preventDefault();
+
+        const headerHeight =
+          header ? header.offsetHeight : 0;
+
+        const targetPosition =
+          target.getBoundingClientRect().top +
+          window.scrollY -
+          headerHeight -
+          20;
+
+        window.scrollTo({
+
+          top: targetPosition,
+
+          behavior: "smooth"
+
+        });
+
+      });
+
+    });
+
+
+  /* =========================================================
+     CARD MOUSE EFFECT
+     حركة بسيطة مع الماوس
+  ========================================================= */
+
+  const cards =
+    document.querySelectorAll(
+      ".field-card, .skill-box, .vision-card"
+    );
+
+
+  cards.forEach(card => {
+
+    card.addEventListener("mousemove", event => {
+
+      if (window.innerWidth < 850) return;
+
+      const rect =
+        card.getBoundingClientRect();
+
+      const x =
+        event.clientX - rect.left;
+
+      const y =
+        event.clientY - rect.top;
+
+      const centerX =
+        rect.width / 2;
+
+      const centerY =
+        rect.height / 2;
+
+      const rotateX =
+        ((y - centerY) / centerY) * -3;
+
+      const rotateY =
+        ((x - centerX) / centerX) * 3;
+
+      card.style.transform =
+        `perspective(900px)
+         rotateX(${rotateX}deg)
+         rotateY(${rotateY}deg)
+         translateY(-8px)`;
+
+    });
+
+
+    card.addEventListener("mouseleave", () => {
+
+      card.style.transform = "";
+
+    });
+
+  });
+
+
+  /* =========================================================
+     PHOTO PARALLAX
+  ========================================================= */
+
+  const photo =
+    document.querySelector(".photo-card");
+
+  const heroVisual =
+    document.querySelector(".hero-visual");
+
+
+  if (photo && heroVisual) {
+
+    heroVisual.addEventListener(
+      "mousemove",
+      event => {
+
+        if (window.innerWidth < 850) return;
+
+        const rect =
+          heroVisual.getBoundingClientRect();
+
+        const x =
+          event.clientX - rect.left;
+
+        const y =
+          event.clientY - rect.top;
+
+        const rotateY =
+          ((x - rect.width / 2) /
+            (rect.width / 2)) * 5;
+
+        const rotateX =
+          ((y - rect.height / 2) /
+            (rect.height / 2)) * -5;
+
+        photo.style.transform =
+          `translateY(-4px)
+           rotateX(${rotateX}deg)
+           rotateY(${rotateY}deg)`;
+
+      }
+    );
+
+
+    heroVisual.addEventListener(
+      "mouseleave",
+      () => {
+
+        photo.style.transform = "";
+
+      }
+    );
+
   }
 
-  $('#year').textContent = new Date().getFullYear();
-})();
+
+  /* =========================================================
+     MOUSE GLOW
+  ========================================================= */
+
+  document.querySelectorAll(
+    ".field-card, .skill-box, .vision-card, .about-box, .contact-card"
+  ).forEach(card => {
+
+    card.addEventListener("mousemove", event => {
+
+      const rect =
+        card.getBoundingClientRect();
+
+      const x =
+        event.clientX - rect.left;
+
+      const y =
+        event.clientY - rect.top;
+
+      card.style.setProperty(
+        "--mouse-x",
+        `${x}px`
+      );
+
+      card.style.setProperty(
+        "--mouse-y",
+        `${y}px`
+      );
+
+    });
+
+  });
+
+
+  /* =========================================================
+     CONTACT BUTTON RIPPLE
+  ========================================================= */
+
+  document.querySelectorAll(
+    ".btn, .contact-btn"
+  ).forEach(button => {
+
+    button.addEventListener("click", event => {
+
+      const ripple =
+        document.createElement("span");
+
+      ripple.className = "click-ripple";
+
+      const rect =
+        button.getBoundingClientRect();
+
+      ripple.style.left =
+        `${event.clientX - rect.left}px`;
+
+      ripple.style.top =
+        `${event.clientY - rect.top}px`;
+
+      button.appendChild(ripple);
+
+      setTimeout(() => {
+
+        ripple.remove();
+
+      }, 700);
+
+    });
+
+  });
+
+
+  /* =========================================================
+     VISION CARDS
+     إعادة تشغيل animation عند الظهور
+  ========================================================= */
+
+  const visionCards =
+    document.querySelectorAll(".vision-card");
+
+
+  const visionObserver =
+    new IntersectionObserver(
+
+      entries => {
+
+        entries.forEach(entry => {
+
+          if (!entry.isIntersecting) return;
+
+          const card =
+            entry.target;
+
+          card.classList.add("visible");
+
+          visionObserver.unobserve(card);
+
+        });
+
+      },
+
+      {
+        threshold: 0.2
+      }
+
+    );
+
+
+  visionCards.forEach(card => {
+
+    visionObserver.observe(card);
+
+  });
+
+
+  /* =========================================================
+     COUNTER ANIMATION
+     أرقام الإحصائيات
+  ========================================================= */
+
+  const statNumbers =
+    document.querySelectorAll(".stat strong");
+
+
+  function animateNumber(element) {
+
+    const finalValue =
+      element.textContent.trim();
+
+    if (
+      finalValue === "∞" ||
+      finalValue.includes("%")
+    ) {
+
+      return;
+
+    }
+
+    const number =
+      parseInt(finalValue, 10);
+
+    if (isNaN(number)) return;
+
+    let current = 0;
+
+    const duration = 900;
+
+    const startTime =
+      performance.now();
+
+
+    function update(time) {
+
+      const progress =
+        Math.min(
+          (time - startTime) / duration,
+          1
+        );
+
+      current =
+        Math.floor(
+          progress * number
+        );
+
+      element.textContent =
+        String(current).padStart(
+          finalValue.length,
+          "0"
+        );
+
+      if (progress < 1) {
+
+        requestAnimationFrame(update);
+
+      } else {
+
+        element.textContent =
+          finalValue;
+
+      }
+
+    }
+
+    requestAnimationFrame(update);
+
+  }
+
+
+  const stats =
+    document.querySelector(".stats");
+
+
+  if (stats) {
+
+    const statsObserver =
+      new IntersectionObserver(
+
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (!entry.isIntersecting) return;
+
+            statNumbers.forEach(
+              animateNumber
+            );
+
+            statsObserver.unobserve(
+              entry.target
+            );
+
+          });
+
+        },
+
+        {
+          threshold: 0.5
+        }
+
+      );
+
+
+    statsObserver.observe(stats);
+
+  }
+
+
+  /* =========================================================
+     SCROLL PROGRESS
+  ========================================================= */
+
+  const scrollProgress =
+    document.createElement("div");
+
+  scrollProgress.className =
+    "scroll-progress";
+
+  document.body.appendChild(
+    scrollProgress
+  );
+
+
+  function updateScrollProgress() {
+
+    const scrollTop =
+      window.scrollY;
+
+    const documentHeight =
+      document.documentElement.scrollHeight -
+      window.innerHeight;
+
+    const percentage =
+      documentHeight > 0
+        ? (scrollTop / documentHeight) * 100
+        : 0;
+
+    scrollProgress.style.width =
+      `${percentage}%`;
+
+  }
+
+
+  window.addEventListener(
+    "scroll",
+    updateScrollProgress,
+    { passive: true }
+  );
+
+  updateScrollProgress();
+
+
+  /* =========================================================
+     CONSOLE
+  ========================================================= */
+
+  console.log(
+    "%c DR. MOHAMED ALI ",
+    "background:#00d4aa;color:#04110e;font-size:18px;font-weight:bold;padding:8px 15px;border-radius:5px;"
+  );
+
+  console.log(
+    "%c طبيب × مبرمج × متداول ",
+    "color:#00d4aa;font-size:14px;"
+  );
+
+});
