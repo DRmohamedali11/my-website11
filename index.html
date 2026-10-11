@@ -1,1296 +1,146 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="ar" dir="rtl">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>د. محمد علي | طبيب × مبرمج × متداول</title>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07090d">
+  <meta name="description" content="الموقع الشخصي لمحمد علي — الطب، التكنولوجيا، والاهتمام بالأسواق المالية.">
+  <title>محمد علي — Beyond The Ordinary</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet">
-
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="script.js"></script>
 </head>
-
 <body>
-
-<div class="site">
-
-  <!-- =========================
-       BACKGROUND
-  ========================== -->
-
-  <div class="background">
-    <div class="glow glow-1"></div>
-    <div class="glow glow-2"></div>
-    <div class="glow glow-3"></div>
-    <div id="particles"></div>
+  <div class="preloader" id="preloader" aria-label="جاري تحميل الموقع">
+    <div class="preloader-mark">MA<span>.</span></div>
+    <div class="preloader-line"><i></i></div>
+    <p>جارٍ تجهيز التجربة</p>
   </div>
 
-  <!-- =========================
-       HEADER
-  ========================== -->
+  <canvas id="starfield" aria-hidden="true"></canvas>
+  <div class="film-grain" aria-hidden="true"></div>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
 
-  <header class="header">
-
-```
-<div class="logo">
-  <span>DR.</span> MOHAMED ALI
-</div>
-
-<button
-  class="menu-btn"
-  id="menuBtn"
-  aria-label="فتح القائمة">
-  ☰
-</button>
-
-<nav class="nav" id="nav">
-
-  <a href="#home">الرئيسية</a>
-  <a href="#about">من أنا</a>
-  <a href="#fields">مجالاتي</a>
-  <a href="#skills">مهاراتي</a>
-  <a href="#vision">رؤيتي</a>
-  <a href="#contact">تواصل معي</a>
-
-</nav>
-```
-
+  <header class="site-header" id="top">
+    <a class="brand" href="#home" aria-label="محمد علي - الرئيسية"><span class="brand-icon">M<span>A</span></span><span class="brand-name">MOHAMED ALI<small>PERSONAL UNIVERSE</small></span></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة" aria-expanded="false"><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks" aria-label="التنقل الرئيسي">
+      <a href="#home" class="active">الرئيسية</a>
+      <a href="#story">قصتي</a>
+      <a href="#domains">عوالمي</a>
+      <a href="#vision">رؤيتي</a>
+      <a href="#contact" class="nav-contact">خلينا نتكلم <span>↗</span></a>
+    </nav>
   </header>
 
-  <!-- =========================
-       MAIN
-  ========================== -->
-
   <main>
-
-```
-<!-- =========================
-     HERO
-========================== -->
-
-<section class="hero" id="home">
-
-  <div class="hero-content">
-
-    <div class="eyebrow">
-      <i></i>
-      <span>أهلاً بك في عالمي</span>
-      <i></i>
-    </div>
-
-
-    <h1>
-      <span>د.</span>
-      محمد
-      <strong>علي</strong>
-    </h1>
-
-
-    <div class="roles">
-
-      <span>طبيب</span>
-      <b>×</b>
-      <span>مبرمج</span>
-      <b>×</b>
-      <span>متداول</span>
-
-    </div>
-
-
-    <p class="hero-text">
-
-      شغوف بالطب والتكنولوجيا والأسواق المالية،
-      وأسعى لصناعة مستقبل يجمع بين العلم
-      والإبداع والتكنولوجيا.
-
-    </p>
-
-
-    <div class="hero-actions">
-
-      <a
-        class="btn primary"
-        href="https://wa.me/201281689551"
-        target="_blank"
-        rel="noopener">
-
-        <span>تواصل معي</span>
-        <b>↗</b>
-
-      </a>
-
-
-      <a
-        class="btn secondary"
-        href="#about">
-
-        اكتشف قصتي
-
-      </a>
-
-    </div>
-
-
-    <div class="stats">
-
-      <div class="stat">
-
-        <strong>03</strong>
-        <span>مجالات</span>
-
-      </div>
-
-
-      <div class="stat">
-
-        <strong>∞</strong>
-        <span>طموح</span>
-
-      </div>
-
-
-      <div class="stat">
-
-        <strong>100%</strong>
-        <span>شغف</span>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- HERO IMAGE -->
-
-  <div class="hero-visual">
-
-    <div class="orbit orbit-one"></div>
-    <div class="orbit orbit-two"></div>
-    <div class="orbit orbit-three"></div>
-
-    <div class="photo-halo"></div>
-
-
-    <div class="photo-card">
-
-      <div class="photo-top">
-
-        <span>PROFILE</span>
-        <span>2026</span>
-
-      </div>
-
-
-     <img
-  src="https://i.ibb.co/Mk3X8hNx/IMG-7495.jpg"
-  alt="د. محمد علي">
- 
-      
-
-      <div class="photo-bottom">
-
-        <span>DR. MOHAMED ALI</span>
-        <span>✦</span>
-
-      </div>
-
-    </div>
-
-
-    <!-- MEDICINE TAG -->
-
-    <div class="floating-tag tag-one">
-
-      <span>✚</span>
-
-      <div>
-
-        <small>FIELD</small>
-        <strong>الطب</strong>
-
-      </div>
-
-    </div>
-
-
-    <!-- PROGRAMMING TAG -->
-
-    <div class="floating-tag tag-two">
-
-      <span>&lt;/&gt;</span>
-
-      <div>
-
-        <small>PASSION</small>
-        <strong>البرمجة</strong>
-
-      </div>
-
-    </div>
-
-
-    <!-- TRADING TAG -->
-
-    <div class="floating-tag tag-three">
-
-      <span>↗</span>
-
-      <div>
-
-        <small>MARKETS</small>
-        <strong>التداول</strong>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
-     ABOUT
-========================== -->
-
-<section class="section about" id="about">
-
-  <div class="section-label">
-    01 / من أنا
-  </div>
-
-
-  <div class="section-title">
-
-    <h2>
-
-      شخص يجمع بين
-      <span>ثلاثة عوالم</span>
-
-    </h2>
-
-
-    <p>
-
-      الطب، البرمجة، والأسواق المالية.
-      ثلاث مجالات مختلفة، لكن يجمعها شيء واحد:
-      الشغف بالتعلم والتطور.
-
-    </p>
-
-  </div>
-
-
-  <div class="about-box">
-
-    <div class="about-number">
-      01
-    </div>
-
-
-    <div class="about-content">
-
-      <h3>
-
-        التعلم المستمر
-        <span>هو أسلوبي.</span>
-
-      </h3>
-
-
-      <p>
-
-        أؤمن أن الإنسان لا يجب أن يحصر نفسه
-        في مجال واحد. لذلك أسعى دائمًا إلى
-        تطوير معرفتي ومهاراتي، والجمع بين
-        التفكير الطبي والمنطق البرمجي والتحليل.
-
-      </p>
-
-
-      <div class="signature">
-
-        <span>DR. MOHAMED ALI</span>
-        <i></i>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
-     FIELDS
-========================== -->
-
-<section class="section fields" id="fields">
-
-  <div class="section-label">
-    02 / مجالاتي
-  </div>
-
-
-  <div class="section-title">
-
-    <h2>
-
-      ثلاثة مجالات،
-      <span>هوية واحدة</span>
-
-    </h2>
-
-  </div>
-
-
-  <div class="field-grid">
-
-
-    <!-- MEDICINE -->
-
-    <article class="field-card medical">
-
-      <div class="card-head">
-
-        <span>01</span>
-        <b>✚</b>
-
-      </div>
-
-
-      <div class="card-icon">
-        ⚕
-      </div>
-
-
-      <h3>
-        الطب
-      </h3>
-
-
-      <p>
-
-        شغف بالعلوم الطبية والرعاية الصحية
-        والتعلم المستمر وتطوير المعرفة.
-
-      </p>
-
-
-      <small>
-        MEDICINE
-      </small>
-
-    </article>
-
-
-
-    <!-- PROGRAMMING -->
-
-    <article class="field-card coding">
-
-      <div class="card-head">
-
-        <span>02</span>
-        <b>&lt;/&gt;</b>
-
-      </div>
-
-
-      <div class="card-icon">
-        &lt;/&gt;
-      </div>
-
-
-      <h3>
-        البرمجة
-      </h3>
-
-
-      <p>
-
-        اهتمام ببناء المواقع والحلول الرقمية
-        وتجربة المستخدم والتكنولوجيا الحديثة.
-
-      </p>
-
-
-      <small>
-        PROGRAMMING
-      </small>
-
-    </article>
-
-
-
-    <!-- TRADING -->
-
-    <article class="field-card trading">
-
-      <div class="card-head">
-
-        <span>03</span>
-        <b>↗</b>
-
-      </div>
-
-
-      <div class="card-icon">
-        ◈
-      </div>
-
-
-      <h3>
-        التداول
-      </h3>
-
-
-      <p>
-
-        اهتمام بالأسواق والتحليل والاستراتيجيات
-        وإدارة المخاطر.
-
-      </p>
-
-
-      <small>
-        TRADING
-      </small>
-
-    </article>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
-     SKILLS
-========================== -->
-
-<section class="section skills" id="skills">
-
-  <div class="section-label">
-    03 / مهاراتي
-  </div>
-
-
-  <div class="section-title">
-
-    <h2>
-
-      المعرفة تتحول إلى
-      <span>مهارة</span>
-
-    </h2>
-
-  </div>
-
-
-  <div class="skills-grid">
-
-
-    <!-- TECHNOLOGY -->
-
-    <div class="skill-box">
-
-      <div class="skill-header">
-
-        <div class="skill-symbol">
-          &lt;/&gt;
+    <section class="hero section-shell" id="home">
+      <div class="hero-copy">
+        <div class="eyebrow reveal"><span class="live-dot"></span> أهلاً بك في عالمي الرقمي <span class="eyebrow-line"></span> 2026</div>
+        <p class="hero-kicker reveal">أفكار كبيرة. فضول لا ينتهي.</p>
+        <h1 class="hero-title reveal"><span class="title-muted">أنا</span> محمد علي<span class="title-dot">.</span><br><span class="type-line"><span id="typedText">أبني المستقبل</span><span class="type-caret">|</span></span></h1>
+        <p class="hero-description reveal">بين العلم والتكنولوجيا والأسواق، أتعلم باستمرار وأحوّل الفضول إلى أفكار، والأفكار إلى خطوات حقيقية.</p>
+        <div class="hero-actions reveal">
+          <a class="button button-primary" href="#domains">اكتشف عالمي <span>↙</span></a>
+          <a class="button button-ghost" href="#contact"><span class="play-icon">↗</span> تواصل معي</a>
         </div>
-
-
-        <div>
-
-          <small>
-            TECHNOLOGY
-          </small>
-
-          <h3>
-            البرمجة والتكنولوجيا
-          </h3>
-
+        <div class="hero-meta reveal">
+          <div><span class="meta-number">03</span><span class="meta-label">عوالم أستكشفها</span></div>
+          <div><span class="meta-number">∞</span><span class="meta-label">مساحة للتعلّم</span></div>
+          <div><span class="meta-number">01</span><span class="meta-label">رحلة مستمرة</span></div>
         </div>
-
       </div>
 
-
-      <div class="skill-row">
-
-        <div>
-
-          <span>
-            HTML / CSS
-          </span>
-
-          <b>
-            90%
-          </b>
-
+      <div class="hero-visual reveal" aria-label="لوحة بصرية تجريدية">
+        <div class="visual-top"><span>FIG. 001 — THE MINDSET</span><span class="visual-status"><i></i> ALWAYS EVOLVING</span></div>
+        <div class="orbital-scene">
+          <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit orbit-c"></div>
+          <div class="orbit-core"><span>MA</span><i></i></div>
+          <span class="orbit-label label-one">CURIOSITY <b>01</b></span>
+          <span class="orbit-label label-two">CREATION <b>02</b></span>
+          <span class="orbit-label label-three">GROWTH <b>03</b></span>
+          <div class="floating-chip chip-code">&lt;/&gt; <span>BUILD</span></div>
+          <div class="floating-chip chip-med">✳ <span>SCIENCE</span></div>
+          <div class="floating-chip chip-market">↗ <span>ANALYZE</span></div>
         </div>
+        <div class="visual-bottom"><span>THE NEXT CHAPTER IS YOURS TO WRITE.</span><span>30° 02' N / 31° 14' E</span></div>
+      </div>
+      <a class="scroll-cue" href="#story"><span class="scroll-wheel"></span><span>انزل واكتشف</span></a>
+      <div class="hero-index">01 <span>/</span> 05</div>
+    </section>
 
+    <section class="marquee-band" aria-label="مجالات الاهتمام">
+      <div class="marquee-track">
+        <span>SCIENCE</span><b>✳</b><span>TECHNOLOGY</span><b>✳</b><span>MARKETS</span><b>✳</b><span>CREATIVITY</span><b>✳</b><span>SCIENCE</span><b>✳</b><span>TECHNOLOGY</span><b>✳</b><span>MARKETS</span><b>✳</b><span>CREATIVITY</span><b>✳</b>
+      </div>
+    </section>
 
-        <div class="progress">
+    <section class="story section-shell section-space" id="story">
+      <div class="section-heading reveal"><span class="section-index">01 / THE STORY</span><span class="section-rule"></span><span class="section-side">نبذة عني</span></div>
+      <div class="story-grid">
+        <div class="story-heading reveal"><p class="small-overline">مش مجرد عنوان وظيفي</p><h2>أؤمن أن <span class="text-gradient">الفضول</span><br>هو بداية كل شيء.</h2></div>
+        <div class="story-copy reveal"><p>أحب اكتشاف الروابط بين المجالات المختلفة. الطب يعلّمني فهم الإنسان، والبرمجة تمنحني أدوات البناء، ومتابعة الأسواق تدربني على التفكير والتحليل.</p><p>لا أبحث عن طريق جاهز؛ أبحث عن طريقة أتعلم بها كل يوم، وأصنع شيئًا أفضل مما كان بالأمس.</p><div class="signature">التعلّم المستمر هو أسلوبي <span>↙</span></div></div>
+      </div>
+      <div class="quote-panel reveal"><span class="quote-mark">“</span><p>مش لازم تختار عالم واحد<br>علشان تصنع لنفسك مستقبل مختلف.</p><span class="quote-caption">A PERSONAL MANIFESTO — MA.</span></div>
+    </section>
 
-          <i data-width="90%"></i>
+    <section class="domains-section section-shell section-space" id="domains">
+      <div class="section-heading reveal"><span class="section-index">02 / MY UNIVERSE</span><span class="section-rule"></span><span class="section-side">عوالمي</span></div>
+      <div class="domains-intro reveal"><h2>ثلاثة مسارات.<br><span class="text-gradient">عقل واحد فضولي.</span></h2><p>كل مجال يضيف زاوية جديدة لطريقة تفكيري.</p></div>
+      <div class="domain-grid">
+        <article class="domain-card reveal" data-card="01">
+          <div class="card-top"><span>01 — HEALTH & SCIENCE</span><span class="card-arrow">↗</span></div>
+          <div class="domain-symbol medical-symbol">✳</div>
+          <h3>العلوم الطبية</h3><p>فهم أعمق لجسم الإنسان، والعلوم الصحية، وكيف يمكن للمعرفة أن تصنع فرقًا حقيقيًا.</p>
+          <div class="card-bottom"><span>SCIENCE</span><span class="card-line"></span><span>01</span></div>
+        </article>
+        <article class="domain-card reveal" data-card="02">
+          <div class="card-top"><span>02 — CODE & CREATION</span><span class="card-arrow">↗</span></div>
+          <div class="domain-symbol code-symbol">&lt;/&gt;</div>
+          <h3>البرمجة والتكنولوجيا</h3><p>بناء تجارب رقمية، وتجربة أفكار جديدة، وتحويل المشكلات إلى حلول بسيطة وذكية.</p>
+          <div class="card-bottom"><span>TECHNOLOGY</span><span class="card-line"></span><span>02</span></div>
+        </article>
+        <article class="domain-card reveal" data-card="03">
+          <div class="card-top"><span>03 — MARKETS & STRATEGY</span><span class="card-arrow">↗</span></div>
+          <div class="domain-symbol market-symbol">↗</div>
+          <h3>الأسواق والتحليل</h3><p>دراسة حركة الأسواق، وتطوير التفكير الاستراتيجي، والتعلّم المستمر عن الانضباط وإدارة المخاطر.</p>
+          <div class="card-bottom"><span>ANALYSIS</span><span class="card-line"></span><span>03</span></div>
+        </article>
+      </div>
+    </section>
 
+    <section class="vision-section section-shell section-space" id="vision">
+      <div class="section-heading reveal"><span class="section-index">03 / THE VISION</span><span class="section-rule"></span><span class="section-side">الرؤية والطموح</span></div>
+      <div class="vision-layout">
+        <div class="vision-title reveal"><p class="small-overline">THINK BEYOND LIMITS</p><h2>المستقبل لا يُنتظر<span class="title-dot">.</span><br><span class="text-gradient">المستقبل يُبنى.</span></h2><p>خطوة وراء خطوة. فكرة وراء فكرة. التقدم الحقيقي يبدأ بالاستمرار.</p><a href="#contact" class="text-link">خلينا نبدأ حوارًا <span>↙</span></a></div>
+        <div class="vision-list">
+          <div class="vision-item reveal"><span class="vision-num">01</span><div><h3>أتعلّم بفضول</h3><p>أسأل، أبحث، وأمنح نفسي فرصة فهم الأشياء من جذورها.</p></div><span class="vision-icon">✳</span></div>
+          <div class="vision-item reveal"><span class="vision-num">02</span><div><h3>أبني بشغف</h3><p>أحوّل ما أتعلمه إلى مشاريع وتجارب وأفكار قابلة للتطوير.</p></div><span class="vision-icon">&lt;/&gt;</span></div>
+          <div class="vision-item reveal"><span class="vision-num">03</span><div><h3>أتطور باستمرار</h3><p>أتعامل مع كل تجربة باعتبارها فرصة جديدة للنمو.</p></div><span class="vision-icon">↗</span></div>
         </div>
-
       </div>
+    </section>
 
-
-      <div class="skill-row">
-
-        <div>
-
-          <span>
-            JavaScript
-          </span>
-
-          <b>
-            80%
-          </b>
-
+    <section class="contact-section section-shell section-space" id="contact">
+      <div class="contact-frame reveal">
+        <div class="contact-orbit" aria-hidden="true"></div>
+        <span class="section-index">04 / OPEN A CHANNEL</span>
+        <p class="contact-kicker">كل فكرة كبيرة تبدأ بمحادثة.</p>
+        <h2>عندك فكرة؟<br><span class="text-gradient">خلينا نتكلم.</span></h2>
+        <p class="contact-description">للتعاون، ومشاركة الأفكار، والمشاريع الجديدة — يسعدني التواصل معك.</p>
+        <div class="contact-actions">
+          <a class="button button-primary" href="https://wa.me/201281689551" target="_blank" rel="noopener noreferrer">ابدأ محادثة واتساب <span>↗</span></a>
+          <a class="button button-ghost" href="mailto:medoali158001@gmail.com">ابعت إيميل <span>↗</span></a>
         </div>
-
-
-        <div class="progress">
-
-          <i data-width="80%"></i>
-
-        </div>
-
+        <div class="contact-details"><a href="mailto:medoali158001@gmail.com">MEDOALI158001@GMAIL.COM</a><span>CAIRO / EGYPT · AVAILABLE FOR IDEAS</span></div>
       </div>
-
-
-      <div class="skill-row">
-
-        <div>
-
-          <span>
-            UI / UX
-          </span>
-
-          <b>
-            85%
-          </b>
-
-        </div>
-
-
-        <div class="progress">
-
-          <i data-width="85%"></i>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-
-    <!-- MARKETS -->
-
-    <div class="skill-box market-box">
-
-      <div class="skill-header">
-
-        <div class="skill-symbol">
-          ↗
-        </div>
-
-
-        <div>
-
-          <small>
-            FINANCIAL MARKETS
-          </small>
-
-          <h3>
-            الأسواق والتداول
-          </h3>
-
-        </div>
-
-      </div>
-
-
-      <div class="market-grid">
-
-        <div>
-
-          <strong>
-            01
-          </strong>
-
-          <span>
-            تحليل
-          </span>
-
-        </div>
-
-
-        <div>
-
-          <strong>
-            02
-          </strong>
-
-          <span>
-            استراتيجية
-          </span>
-
-        </div>
-
-
-        <div>
-
-          <strong>
-            03
-          </strong>
-
-          <span>
-            مخاطر
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <div class="chart">
-
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
-     VISION
-========================== -->
-
-<section class="section vision" id="vision">
-
-  <div class="section-label">
-    04 / رؤيتي وطموحي
-  </div>
-
-
-  <div class="section-title">
-
-    <h2>
-
-      أتعلم اليوم لأكون
-      <span>أفضل غدًا</span>
-
-    </h2>
-
-
-    <p>
-
-      أؤمن أن الإنسان قادر على بناء نفسه في أكثر من مجال،
-      طالما لديه الشغف والاستعداد للتعلم والاستمرار.
-
-    </p>
-
-  </div>
-
-
-  <div class="vision-grid">
-
-
-    <!-- MEDICINE -->
-
-    <article class="vision-card medicine-card">
-
-      <div class="vision-number">
-        01
-      </div>
-
-
-      <div class="medical-animation">
-
-        <div class="heart-line">
-          <span></span>
-        </div>
-
-        <div class="medical-cross">
-          +
-        </div>
-
-        <div class="medical-circle"></div>
-
-      </div>
-
-
-      <small>
-        MEDICINE
-      </small>
-
-
-      <h3>
-        الطب
-      </h3>
-
-
-      <p>
-
-        أسعى إلى تطوير معرفتي في المجال الطبي،
-        وفهم العلوم الطبية بشكل أعمق، وأن أكون
-        طبيبًا أستمر في التعلم والتطور طوال مسيرتي.
-
-      </p>
-
-
-      <div class="card-bottom">
-
-        <span>
-          SCIENCE
-        </span>
-
-        <b>
-          🩺
-        </b>
-
-      </div>
-
-    </article>
-
-
-
-    <!-- PROGRAMMING -->
-
-    <article class="vision-card coding-card">
-
-      <div class="vision-number">
-        02
-      </div>
-
-
-      <div class="code-animation">
-
-        <div class="code-window">
-
-          <div class="code-bar">
-
-            <i></i>
-            <i></i>
-            <i></i>
-
-          </div>
-
-
-          <div class="code-lines">
-
-            <span>
-              &lt;html&gt;
-            </span>
-
-            <span>
-              &nbsp;&nbsp;Hello World
-            </span>
-
-            <span>
-              &lt;/html&gt;
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <div class="code-symbol">
-          &lt;/&gt;
-        </div>
-
-      </div>
-
-
-      <small>
-        TECHNOLOGY
-      </small>
-
-
-      <h3>
-        التكنولوجيا
-      </h3>
-
-
-      <p>
-
-        لدي شغف بالبرمجة وتطوير المواقع والتكنولوجيا،
-        وأستمتع بتعلم مهارات جديدة وتحويل الأفكار
-        إلى مشاريع رقمية بسيطة ومفيدة.
-
-      </p>
-
-
-      <div class="card-bottom">
-
-        <span>
-          CREATE
-        </span>
-
-        <b>
-          &lt;/&gt;
-        </b>
-
-      </div>
-
-    </article>
-
-
-
-    <!-- TRADING -->
-
-    <article class="vision-card trading-card">
-
-      <div class="vision-number">
-        03
-      </div>
-
-
-      <div class="trading-animation">
-
-        <div class="chart-grid"></div>
-
-
-        <svg
-          viewBox="0 0 300 120"
-          preserveAspectRatio="none">
-
-          <polyline
-            points="0,100 35,80 65,90 95,55 125,70 155,35 190,50 220,20 250,35 300,5"
-          />
-
-        </svg>
-
-
-        <div class="chart-arrow">
-          ↗
-        </div>
-
-      </div>
-
-
-      <small>
-        FINANCIAL MARKETS
-      </small>
-
-
-      <h3>
-        الأسواق
-      </h3>
-
-
-      <p>
-
-        أهتم بعالم الأسواق المالية والتداول،
-        وأسعى إلى تطوير فهمي للتحليل وإدارة المخاطر
-        والانضباط، مع إدراك أهمية العلم والصبر والخبرة.
-
-      </p>
-
-
-      <div class="card-bottom">
-
-        <span>
-          ANALYSIS
-        </span>
-
-        <b>
-          ↗
-        </b>
-
-      </div>
-
-    </article>
-
-  </div>
-
-
-  <div class="vision-bottom">
-
-    <div class="vision-line"></div>
-
-
-    <p>
-
-      هدفي ليس أن أتوقف عند مجال واحد،
-      بل أن أستمر في التعلم وأطور نفسي خطوة بخطوة،
-      وأجمع بين الطب والتكنولوجيا واهتماماتي المختلفة.
-
-    </p>
-
-
-    <strong>
-
-      أتعلم اليوم لأكون أفضل غدًا.
-
-    </strong>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
-     QUOTE
-========================== -->
-
-<section class="quote">
-
-  <div class="quote-mark">
-    “
-  </div>
-
-
-  <h2>
-
-    الطموح لا حدود له،
-    <span>والتعلم لا يتوقف.</span>
-
-  </h2>
-
-
-  <p>
-
-    العلم هو الأساس، الشغف هو المحرك،
-    والعمل هو الطريق.
-
-  </p>
-
-</section>
-
-
-
-<!-- =========================
-     CONTACT
-========================== -->
-
-<section class="section contact" id="contact">
-
-  <div class="contact-card">
-
-
-    <div class="contact-content">
-
-      <div class="section-label">
-        05 / تواصل معي
-      </div>
-
-
-      <h2>
-
-        لديك فكرة؟
-        <span>فلنتحدث.</span>
-
-      </h2>
-
-
-      <p>
-
-        يسعدني التواصل معك بخصوص الأفكار،
-        المشاريع، أو فرص التعاون والاستفسارات.
-
-      </p>
-
-
-
-      <!-- WHATSAPP -->
-
-      <div class="contact-number">
-
-        <small>
-          WHATSAPP
-        </small>
-
-
-        <strong>
-          +20 128 168 9551
-        </strong>
-
-      </div>
-
-
-      <a
-        href="https://wa.me/201281689551"
-        target="_blank"
-        rel="noopener"
-        class="contact-btn">
-
-        ابدأ المحادثة
-
-        <span>
-          ↗
-        </span>
-
-      </a>
-
-
-
-      <!-- EMAIL -->
-
-      <div class="contact-number email-contact">
-
-        <small>
-          EMAIL
-        </small>
-
-
-        <strong>
-          medoali158001@gmail.com
-        </strong>
-
-      </div>
-
-
-      <a
-        href="mailto:medoali158001@gmail.com"
-        class="contact-btn email-btn">
-
-        أرسل لي بريدًا إلكترونيًا
-
-        <span>
-          ✉
-        </span>
-
-      </a>
-
-
-
-     
-
-    </div>
-
-
-
-    <!-- DECORATION -->
-
-    <div class="contact-decoration">
-
-      <span>
-        DR.
-      </span>
-
-      <strong>
-        MA
-      </strong>
-
-    </div>
-
-  </div>
-
-</section>
-```
-
+    </section>
   </main>
 
-  <!-- =========================
-       FOOTER
-  ========================== -->
-
-  <footer class="footer">
-
-```
-<div>
-  DR. MOHAMED ALI
-</div>
-
-<p>
-  طبيب × مبرمج × متداول
-</p>
-
-<span>
-  © 2026 جميع الحقوق محفوظة
-</span>
-```
-
-  </footer>
-
-</div>
-
-<!-- =========================
-     JAVASCRIPT
-========================== -->
-
-<script>
-
-  /* =========================
-     MOBILE MENU
-  ========================== */
-
-  const menuBtn = document.getElementById("menuBtn");
-  const nav = document.getElementById("nav");
-
-  if (menuBtn && nav) {
-
-    menuBtn.addEventListener("click", () => {
-
-      nav.classList.toggle("active");
-
-    });
-
-
-    nav.querySelectorAll("a").forEach(link => {
-
-      link.addEventListener("click", () => {
-
-        nav.classList.remove("active");
-
-      });
-
-    });
-
-  }
-
-
-
-  /* =========================
-     SKILLS ANIMATION
-  ========================== */
-
-  const progressBars =
-    document.querySelectorAll(".progress i");
-
-
-  const progressObserver =
-    new IntersectionObserver(
-
-      entries => {
-
-        entries.forEach(entry => {
-
-          if (entry.isIntersecting) {
-
-            const width =
-              entry.target.getAttribute("data-width");
-
-            entry.target.style.width = width;
-
-            progressObserver.unobserve(entry.target);
-
-          }
-
-        });
-
-      },
-
-      {
-        threshold: 0.5
-      }
-
-    );
-
-
-  progressBars.forEach(bar => {
-
-    progressObserver.observe(bar);
-
-  });
-
-
-
-  /* =========================
-     SMOOTH SCROLL
-  ========================== */
-
-  document.querySelectorAll('a[href^="#"]')
-    .forEach(link => {
-
-      link.addEventListener("click", function(e) {
-
-        const target =
-          document.querySelector(this.getAttribute("href"));
-
-        if (target) {
-
-          e.preventDefault();
-
-          target.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-
-        }
-
-      });
-
-    });
-
-
-
-  /* =========================
-     PARTICLES
-  ========================== */
-
-  const particles =
-    document.getElementById("particles");
-
-
-  if (particles) {
-
-    for (let i = 0; i < 35; i++) {
-
-      const particle =
-        document.createElement("span");
-
-      particle.className = "particle";
-
-
-      particle.style.left =
-        Math.random() * 100 + "%";
-
-
-      particle.style.top =
-        Math.random() * 100 + "%";
-
-
-      particle.style.animationDelay =
-        Math.random() * 5 + "s";
-
-
-      particle.style.animationDuration =
-        (4 + Math.random() * 6) + "s";
-
-
-      particles.appendChild(particle);
-
-    }
-
-  }
-
-</script>
-
+  <footer class="site-footer section-shell"><a class="footer-brand" href="#home">MA<span>.</span></a><p>أتعلم اليوم لأكون أفضل غدًا.</p><span>© <span id="year"></span> MOHAMED ALI — MADE WITH CURIOSITY.</span><a class="back-top" href="#home" aria-label="العودة للأعلى">↑</a></footer>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 </body>
 </html>
