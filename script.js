@@ -108,6 +108,96 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================================
+     TYPEWRITER EFFECT — كتابة حرف بحرف
+  ========================================================= */
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  function prepareTypewriter(element, startDelay = 0) {
+    if (!element || element.dataset.typewriterReady === "true") return;
+
+    const walker = document.createTreeWalker(
+      element,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode(node) {
+          return node.nodeValue.trim()
+            ? NodeFilter.FILTER_ACCEPT
+            : NodeFilter.FILTER_REJECT;
+        }
+      }
+    );
+
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+    const characters = [];
+    textNodes.forEach(node => {
+      const fragment = document.createDocumentFragment();
+      Array.from(node.nodeValue).forEach(character => {
+        const span = document.createElement("span");
+        span.className = "typing-char";
+        span.textContent = character;
+        span.setAttribute("aria-hidden", "true");
+        fragment.appendChild(span);
+        characters.push(span);
+      });
+      node.parentNode.replaceChild(fragment, node);
+    });
+
+    if (!characters.length) return;
+
+    element.dataset.typewriterReady = "true";
+    element.setAttribute("aria-label", element.textContent);
+    element.classList.add("typewriter-text");
+
+    if (prefersReducedMotion) {
+      characters.forEach(character => character.classList.add("typed"));
+      return;
+    }
+
+    let index = 0;
+    const typeNextCharacter = () => {
+      if (index >= characters.length) return;
+      characters[index].classList.add("typed");
+      index++;
+      window.setTimeout(typeNextCharacter, 34);
+    };
+
+    window.setTimeout(typeNextCharacter, startDelay);
+  }
+
+  if (!prefersReducedMotion) {
+    prepareTypewriter(document.querySelector(".hero-title"), 220);
+    prepareTypewriter(document.querySelector(".hero-text"), 900);
+
+    const typewriterHeadings = document.querySelectorAll(
+      ".section-title h2, main > section > h2"
+    );
+
+    if ("IntersectionObserver" in window) {
+      const headingObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            prepareTypewriter(entry.target, 80);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.25 });
+
+      typewriterHeadings.forEach(heading => headingObserver.observe(heading));
+    } else {
+      typewriterHeadings.forEach(heading => prepareTypewriter(heading, 80));
+    }
+  } else {
+    document.querySelectorAll(".hero-title, .hero-text, .section-title h2, main > section > h2")
+      .forEach(element => prepareTypewriter(element));
+  }
+
+
+  /* =========================================================
      ROLE ANIMATION
      طبيب × مبرمج × متداول
   ========================================================= */
