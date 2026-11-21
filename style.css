@@ -2575,24 +2575,23 @@ footer p {
 }
 
 
-/* Typewriter text: reveal Arabic and English characters in sequence */
+/* Typewriter: keep Arabic words connected */
+
 .typewriter-text .typing-char {
-  display: inline-block;
+  display: inline;
   opacity: 0;
-  transform: translateY(0.18em);
-  transition: opacity 100ms ease, transform 100ms ease;
+  transition: opacity 100ms ease;
   white-space: pre-wrap;
 }
 
 .typewriter-text .typing-char.typed {
   opacity: 1;
-  transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .typewriter-text .typing-char {
     opacity: 1;
-    transform: none;
     transition: none;
   }
+}
 }
