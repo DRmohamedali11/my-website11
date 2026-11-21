@@ -12,9 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const nav = document.getElementById("nav");
 
   if (menuBtn && nav) {
-
     menuBtn.addEventListener("click", () => {
-
       nav.classList.toggle("active");
 
       const isOpen = nav.classList.contains("active");
@@ -23,34 +21,20 @@ document.addEventListener("DOMContentLoaded", () => {
         "aria-label",
         isOpen ? "إغلاق القائمة" : "فتح القائمة"
       );
+
       menuBtn.setAttribute("aria-expanded", String(isOpen));
-
       menuBtn.innerHTML = isOpen ? "✕" : "☰";
-
     });
 
-
-    // إغلاق القائمة عند الضغط على أي رابط
     nav.querySelectorAll("a").forEach(link => {
-
       link.addEventListener("click", () => {
-
         nav.classList.remove("active");
-
         menuBtn.innerHTML = "☰";
-
-        menuBtn.setAttribute(
-          "aria-label",
-          "فتح القائمة"
-        );
+        menuBtn.setAttribute("aria-label", "فتح القائمة");
         menuBtn.setAttribute("aria-expanded", "false");
-
       });
-
     });
-
   }
-
 
   /* =========================================================
      HEADER SCROLL EFFECT
@@ -59,7 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const header = document.querySelector(".header");
 
   function updateHeader() {
-
     if (!header) return;
 
     if (window.scrollY > 40) {
@@ -67,7 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       header.classList.remove("scrolled");
     }
-
   }
 
   window.addEventListener("scroll", updateHeader, {
@@ -76,25 +58,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateHeader();
 
-
   /* =========================================================
      HERO TEXT SEQUENCE
-     ظهور عناصر الـ Hero واحد وراء الثاني
   ========================================================= */
 
   const heroItems = [
-
     ".hero .eyebrow",
     ".hero h1",
     ".hero .roles",
     ".hero .hero-text",
     ".hero .hero-actions",
     ".hero .stats"
-
   ];
 
   heroItems.forEach((selector, index) => {
-
     const element = document.querySelector(selector);
 
     if (!element) return;
@@ -103,12 +80,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     element.style.animationDelay =
       `${0.15 + index * 0.18}s`;
-
   });
 
-
   /* =========================================================
-     TYPEWRITER EFFECT — كتابة حرف بحرف
+     TYPEWRITER EFFECT
+     ظهور الكلمات بالتتابع مع الحفاظ على اتصال الحروف العربية
   ========================================================= */
 
   const prefersReducedMotion = window.matchMedia(
@@ -116,7 +92,9 @@ document.addEventListener("DOMContentLoaded", () => {
   ).matches;
 
   function prepareTypewriter(element, startDelay = 0) {
-    if (!element || element.dataset.typewriterReady === "true") return;
+    if (!element || element.dataset.typewriterReady === "true") {
+      return;
+    }
 
     const walker = document.createTreeWalker(
       element,
@@ -131,75 +109,113 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     const textNodes = [];
-    while (walker.nextNode()) textNodes.push(walker.currentNode);
 
-    const characters = [];
+    while (walker.nextNode()) {
+      textNodes.push(walker.currentNode);
+    }
+
+    const words = [];
+
     textNodes.forEach(node => {
       const fragment = document.createDocumentFragment();
-      Array.from(node.nodeValue).forEach(character => {
+
+      // تقسيم النص إلى كلمات ومسافات، وليس إلى حروف منفصلة
+      const parts = node.nodeValue.match(/\s+|[^\s]+/gu) || [];
+
+      parts.forEach(part => {
+        if (/^\s+$/u.test(part)) {
+          fragment.appendChild(
+            document.createTextNode(part)
+          );
+
+          return;
+        }
+
         const span = document.createElement("span");
+
         span.className = "typing-char";
-        span.textContent = character;
+        span.textContent = part;
         span.setAttribute("aria-hidden", "true");
+
         fragment.appendChild(span);
-        characters.push(span);
+        words.push(span);
       });
+
       node.parentNode.replaceChild(fragment, node);
     });
 
-    if (!characters.length) return;
+    if (!words.length) return;
 
     element.dataset.typewriterReady = "true";
     element.setAttribute("aria-label", element.textContent);
     element.classList.add("typewriter-text");
 
     if (prefersReducedMotion) {
-      characters.forEach(character => character.classList.add("typed"));
+      words.forEach(word => word.classList.add("typed"));
       return;
     }
 
     let index = 0;
-    const typeNextCharacter = () => {
-      if (index >= characters.length) return;
-      characters[index].classList.add("typed");
-      index++;
-      window.setTimeout(typeNextCharacter, 34);
-    };
 
-    window.setTimeout(typeNextCharacter, startDelay);
+    function typeNextWord() {
+      if (index >= words.length) return;
+
+      words[index].classList.add("typed");
+      index++;
+
+      // سرعة ظهور الكلمات: كل 110 مللي ثانية
+      window.setTimeout(typeNextWord, 110);
+    }
+
+    window.setTimeout(typeNextWord, startDelay);
   }
 
   if (!prefersReducedMotion) {
-    prepareTypewriter(document.querySelector(".hero-title"), 220);
-    prepareTypewriter(document.querySelector(".hero-text"), 900);
+    prepareTypewriter(
+      document.querySelector(".hero-title"),
+      220
+    );
+
+    prepareTypewriter(
+      document.querySelector(".hero-text"),
+      900
+    );
 
     const typewriterHeadings = document.querySelectorAll(
       ".section-title h2, main > section > h2"
     );
 
     if ("IntersectionObserver" in window) {
-      const headingObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            prepareTypewriter(entry.target, 80);
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.25 });
+      const headingObserver = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              prepareTypewriter(entry.target, 80);
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.25 }
+      );
 
-      typewriterHeadings.forEach(heading => headingObserver.observe(heading));
+      typewriterHeadings.forEach(heading => {
+        headingObserver.observe(heading);
+      });
     } else {
-      typewriterHeadings.forEach(heading => prepareTypewriter(heading, 80));
+      typewriterHeadings.forEach(heading => {
+        prepareTypewriter(heading, 80);
+      });
     }
   } else {
-    document.querySelectorAll(".hero-title, .hero-text, .section-title h2, main > section > h2")
-      .forEach(element => prepareTypewriter(element));
+    document.querySelectorAll(
+      ".hero-title, .hero-text, .section-title h2, main > section > h2"
+    ).forEach(element => {
+      prepareTypewriter(element);
+    });
   }
-
 
   /* =========================================================
      ROLE ANIMATION
-     طبيب × مبرمج × متداول
   ========================================================= */
 
   const roles = [
@@ -211,17 +227,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const rolesContainer = document.querySelector(".roles");
 
   if (rolesContainer) {
-
     const spans = rolesContainer.querySelectorAll("span");
 
     if (spans.length >= 3) {
-
       let roleIndex = 0;
 
       setInterval(() => {
-
         spans.forEach((span, index) => {
-
           span.classList.remove("animated-role");
 
           if (index === roleIndex) {
@@ -231,7 +243,6 @@ document.addEventListener("DOMContentLoaded", () => {
               span.classList.add("show");
             });
           }
-
         });
 
         roleIndex++;
@@ -239,13 +250,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (roleIndex >= spans.length) {
           roleIndex = 0;
         }
-
       }, 2200);
-
     }
-
   }
-
 
   /* =========================================================
      PARTICLES
@@ -255,14 +262,11 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("particles");
 
   if (particlesContainer) {
-
     const particleCount =
       window.innerWidth <= 600 ? 25 : 55;
 
     for (let i = 0; i < particleCount; i++) {
-
-      const particle =
-        document.createElement("span");
+      const particle = document.createElement("span");
 
       particle.className = "particle";
 
@@ -272,14 +276,10 @@ document.addEventListener("DOMContentLoaded", () => {
       particle.style.top =
         `${Math.random() * 100}%`;
 
-      const size =
-        Math.random() * 2 + 1;
+      const size = Math.random() * 2 + 1;
 
-      particle.style.width =
-        `${size}px`;
-
-      particle.style.height =
-        `${size}px`;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
 
       particle.style.animationDuration =
         `${4 + Math.random() * 8}s`;
@@ -288,19 +288,14 @@ document.addEventListener("DOMContentLoaded", () => {
         `${Math.random() * -8}s`;
 
       particlesContainer.appendChild(particle);
-
     }
-
   }
-
 
   /* =========================================================
      SCROLL REVEAL
-     العناصر تظهر واحدة وراء الثانية
   ========================================================= */
 
   const revealSelectors = [
-
     ".section-label",
     ".section-title",
     ".about-box",
@@ -310,89 +305,61 @@ document.addEventListener("DOMContentLoaded", () => {
     ".vision-bottom",
     ".quote",
     ".contact-card"
-
   ];
 
   const revealElements = [];
 
   revealSelectors.forEach(selector => {
-
     document.querySelectorAll(selector).forEach(element => {
-
       element.classList.add("reveal");
-
       revealElements.push(element);
-
     });
-
   });
-
 
   /* =========================================================
      REVEAL OBSERVER
   ========================================================= */
 
-  const revealObserver =
-    new IntersectionObserver(
+  const revealObserver = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
 
-      (entries) => {
+        const element = entry.target;
 
-        entries.forEach(entry => {
+        element.classList.add("show");
 
-          if (!entry.isIntersecting) return;
-
-          const element = entry.target;
-
-          element.classList.add("show");
-
-          revealObserver.unobserve(element);
-
-        });
-
-      },
-
-      {
-        threshold: 0.12,
-        rootMargin: "0px 0px -60px 0px"
-      }
-
-    );
-
+        revealObserver.unobserve(element);
+      });
+    },
+    {
+      threshold: 0.12,
+      rootMargin: "0px 0px -60px 0px"
+    }
+  );
 
   revealElements.forEach(element => {
-
     revealObserver.observe(element);
-
   });
-
 
   /* =========================================================
      STAGGER ANIMATION
-     الكروت تظهر بالتتابع
   ========================================================= */
 
   const staggerGroups = [
-
     ".field-grid .field-card",
     ".skills-grid .skill-box",
     ".vision-grid .vision-card"
-
   ];
 
   staggerGroups.forEach(selector => {
-
-    const items =
-      document.querySelectorAll(selector);
+    const items = document.querySelectorAll(selector);
 
     items.forEach((item, index) => {
-
       item.style.transitionDelay =
         `${index * 0.15}s`;
-
     });
-
   });
-
 
   /* =========================================================
      SKILLS PROGRESS
@@ -401,105 +368,64 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressBars =
     document.querySelectorAll(".progress i");
 
-
   progressBars.forEach(bar => {
-
-    const width =
-      bar.getAttribute("data-width");
+    const width = bar.getAttribute("data-width");
 
     if (width) {
-
-      bar.style.setProperty(
-        "--progress-width",
-        width
-      );
-
+      bar.style.setProperty("--progress-width", width);
     }
-
   });
 
+  const progressObserver = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
 
-  const progressObserver =
-    new IntersectionObserver(
+        const bars =
+          entry.target.querySelectorAll(".progress i");
 
-      entries => {
-
-        entries.forEach(entry => {
-
-          if (!entry.isIntersecting) return;
-
-          const bars =
-            entry.target.querySelectorAll(".progress i");
-
-          bars.forEach((bar, index) => {
-
-            setTimeout(() => {
-
-              bar.classList.add("loaded");
-
-            }, index * 180);
-
-          });
-
-          progressObserver.unobserve(entry.target);
-
+        bars.forEach((bar, index) => {
+          setTimeout(() => {
+            bar.classList.add("loaded");
+          }, index * 180);
         });
 
-      },
+        progressObserver.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: 0.3
+    }
+  );
 
-      {
-        threshold: 0.3
-      }
-
-    );
-
-
-  document.querySelectorAll(".skills-grid")
-    .forEach(section => {
-
-      progressObserver.observe(section);
-
-    });
-
+  document.querySelectorAll(".skills-grid").forEach(section => {
+    progressObserver.observe(section);
+  });
 
   /* =========================================================
      TRADING CHART ANIMATION
   ========================================================= */
 
-  const charts =
-    document.querySelectorAll(".chart");
+  const charts = document.querySelectorAll(".chart");
 
+  const chartObserver = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
 
-  const chartObserver =
-    new IntersectionObserver(
+        entry.target.classList.add("loaded");
 
-      entries => {
-
-        entries.forEach(entry => {
-
-          if (!entry.isIntersecting) return;
-
-          entry.target.classList.add("loaded");
-
-          chartObserver.unobserve(entry.target);
-
-        });
-
-      },
-
-      {
-        threshold: 0.35
-      }
-
-    );
-
+        chartObserver.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: 0.35
+    }
+  );
 
   charts.forEach(chart => {
-
     chartObserver.observe(chart);
-
   });
-
 
   /* =========================================================
      ACTIVE NAV LINK
@@ -511,125 +437,82 @@ document.addEventListener("DOMContentLoaded", () => {
   const navLinks =
     document.querySelectorAll(".nav a");
 
+  const sectionObserver = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
 
-  const sectionObserver =
-    new IntersectionObserver(
+        const id = entry.target.getAttribute("id");
 
-      entries => {
+        navLinks.forEach(link => {
+          link.classList.remove("active-link");
 
-        entries.forEach(entry => {
-
-          if (!entry.isIntersecting) return;
-
-          const id =
-            entry.target.getAttribute("id");
-
-          navLinks.forEach(link => {
-
-            link.classList.remove("active-link");
-
-            if (
-              link.getAttribute("href") === `#${id}`
-            ) {
-
-              link.classList.add("active-link");
-
-            }
-
-          });
-
+          if (link.getAttribute("href") === `#${id}`) {
+            link.classList.add("active-link");
+          }
         });
-
-      },
-
-      {
-        threshold: 0.35
-      }
-
-    );
-
+      });
+    },
+    {
+      threshold: 0.35
+    }
+  );
 
   sections.forEach(section => {
-
     sectionObserver.observe(section);
-
   });
-
 
   /* =========================================================
      SMOOTH SCROLL
   ========================================================= */
 
-  document.querySelectorAll('a[href^="#"]')
-    .forEach(link => {
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener("click", event => {
+      const targetId = link.getAttribute("href");
 
-      link.addEventListener("click", event => {
+      if (!targetId || targetId === "#") return;
 
-        const targetId =
-          link.getAttribute("href");
+      const target = document.querySelector(targetId);
 
-        if (!targetId || targetId === "#") return;
+      if (!target) return;
 
-        const target =
-          document.querySelector(targetId);
+      event.preventDefault();
 
-        if (!target) return;
+      const headerHeight =
+        header ? header.offsetHeight : 0;
 
-        event.preventDefault();
+      const targetPosition =
+        target.getBoundingClientRect().top +
+        window.scrollY -
+        headerHeight -
+        20;
 
-        const headerHeight =
-          header ? header.offsetHeight : 0;
-
-        const targetPosition =
-          target.getBoundingClientRect().top +
-          window.scrollY -
-          headerHeight -
-          20;
-
-        window.scrollTo({
-
-          top: targetPosition,
-
-          behavior: "smooth"
-
-        });
-
+      window.scrollTo({
+        top: targetPosition,
+        behavior: "smooth"
       });
-
     });
-
+  });
 
   /* =========================================================
      CARD MOUSE EFFECT
-     حركة بسيطة مع الماوس
   ========================================================= */
 
-  const cards =
-    document.querySelectorAll(
-      ".field-card, .skill-box, .vision-card"
-    );
-
+  const cards = document.querySelectorAll(
+    ".field-card, .skill-box, .vision-card"
+  );
 
   cards.forEach(card => {
-
     card.addEventListener("mousemove", event => {
-
       if (window.innerWidth < 850) return;
 
-      const rect =
-        card.getBoundingClientRect();
+      const rect = card.getBoundingClientRect();
 
-      const x =
-        event.clientX - rect.left;
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
 
-      const y =
-        event.clientY - rect.top;
-
-      const centerX =
-        rect.width / 2;
-
-      const centerY =
-        rect.height / 2;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
 
       const rotateX =
         ((y - centerY) / centerY) * -3;
@@ -642,75 +525,45 @@ document.addEventListener("DOMContentLoaded", () => {
          rotateX(${rotateX}deg)
          rotateY(${rotateY}deg)
          translateY(-8px)`;
-
     });
-
 
     card.addEventListener("mouseleave", () => {
-
       card.style.transform = "";
-
     });
-
   });
-
 
   /* =========================================================
      PHOTO PARALLAX
   ========================================================= */
 
-  const photo =
-    document.querySelector(".photo-card");
-
-  const heroVisual =
-    document.querySelector(".hero-visual");
-
+  const photo = document.querySelector(".photo-card");
+  const heroVisual = document.querySelector(".hero-visual");
 
   if (photo && heroVisual) {
+    heroVisual.addEventListener("mousemove", event => {
+      if (window.innerWidth < 850) return;
 
-    heroVisual.addEventListener(
-      "mousemove",
-      event => {
+      const rect = heroVisual.getBoundingClientRect();
 
-        if (window.innerWidth < 850) return;
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
 
-        const rect =
-          heroVisual.getBoundingClientRect();
+      const rotateY =
+        ((x - rect.width / 2) / (rect.width / 2)) * 5;
 
-        const x =
-          event.clientX - rect.left;
+      const rotateX =
+        ((y - rect.height / 2) / (rect.height / 2)) * -5;
 
-        const y =
-          event.clientY - rect.top;
+      photo.style.transform =
+        `translateY(-4px)
+         rotateX(${rotateX}deg)
+         rotateY(${rotateY}deg)`;
+    });
 
-        const rotateY =
-          ((x - rect.width / 2) /
-            (rect.width / 2)) * 5;
-
-        const rotateX =
-          ((y - rect.height / 2) /
-            (rect.height / 2)) * -5;
-
-        photo.style.transform =
-          `translateY(-4px)
-           rotateX(${rotateX}deg)
-           rotateY(${rotateY}deg)`;
-
-      }
-    );
-
-
-    heroVisual.addEventListener(
-      "mouseleave",
-      () => {
-
-        photo.style.transform = "";
-
-      }
-    );
-
+    heroVisual.addEventListener("mouseleave", () => {
+      photo.style.transform = "";
+    });
   }
-
 
   /* =========================================================
      MOUSE GLOW
@@ -719,50 +572,28 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(
     ".field-card, .skill-box, .vision-card, .about-box, .contact-card"
   ).forEach(card => {
-
     card.addEventListener("mousemove", event => {
+      const rect = card.getBoundingClientRect();
 
-      const rect =
-        card.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
 
-      const x =
-        event.clientX - rect.left;
-
-      const y =
-        event.clientY - rect.top;
-
-      card.style.setProperty(
-        "--mouse-x",
-        `${x}px`
-      );
-
-      card.style.setProperty(
-        "--mouse-y",
-        `${y}px`
-      );
-
+      card.style.setProperty("--mouse-x", `${x}px`);
+      card.style.setProperty("--mouse-y", `${y}px`);
     });
-
   });
-
 
   /* =========================================================
      CONTACT BUTTON RIPPLE
   ========================================================= */
 
-  document.querySelectorAll(
-    ".btn, .contact-btn"
-  ).forEach(button => {
-
+  document.querySelectorAll(".btn, .contact-btn").forEach(button => {
     button.addEventListener("click", event => {
-
-      const ripple =
-        document.createElement("span");
+      const ripple = document.createElement("span");
 
       ripple.className = "click-ripple";
 
-      const rect =
-        button.getBoundingClientRect();
+      const rect = button.getBoundingClientRect();
 
       ripple.style.left =
         `${event.clientX - rect.left}px`;
@@ -773,205 +604,132 @@ document.addEventListener("DOMContentLoaded", () => {
       button.appendChild(ripple);
 
       setTimeout(() => {
-
         ripple.remove();
-
       }, 700);
-
     });
-
   });
-
 
   /* =========================================================
      VISION CARDS
-     إعادة تشغيل animation عند الظهور
   ========================================================= */
 
   const visionCards =
     document.querySelectorAll(".vision-card");
 
+  const visionObserver = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
 
-  const visionObserver =
-    new IntersectionObserver(
+        const card = entry.target;
 
-      entries => {
+        card.classList.add("visible");
 
-        entries.forEach(entry => {
-
-          if (!entry.isIntersecting) return;
-
-          const card =
-            entry.target;
-
-          card.classList.add("visible");
-
-          visionObserver.unobserve(card);
-
-        });
-
-      },
-
-      {
-        threshold: 0.2
-      }
-
-    );
-
+        visionObserver.unobserve(card);
+      });
+    },
+    {
+      threshold: 0.2
+    }
+  );
 
   visionCards.forEach(card => {
-
     visionObserver.observe(card);
-
   });
-
 
   /* =========================================================
      COUNTER ANIMATION
-     أرقام الإحصائيات
   ========================================================= */
 
   const statNumbers =
     document.querySelectorAll(".stat strong");
 
-
   function animateNumber(element) {
-
-    const finalValue =
-      element.textContent.trim();
+    const finalValue = element.textContent.trim();
 
     if (
       finalValue === "∞" ||
       finalValue.includes("%")
     ) {
-
       return;
-
     }
 
-    const number =
-      parseInt(finalValue, 10);
+    const number = parseInt(finalValue, 10);
 
     if (isNaN(number)) return;
 
     let current = 0;
 
     const duration = 900;
-
-    const startTime =
-      performance.now();
-
+    const startTime = performance.now();
 
     function update(time) {
+      const progress = Math.min(
+        (time - startTime) / duration,
+        1
+      );
 
-      const progress =
-        Math.min(
-          (time - startTime) / duration,
-          1
-        );
+      current = Math.floor(progress * number);
 
-      current =
-        Math.floor(
-          progress * number
-        );
-
-      element.textContent =
-        String(current).padStart(
-          finalValue.length,
-          "0"
-        );
+      element.textContent = String(current).padStart(
+        finalValue.length,
+        "0"
+      );
 
       if (progress < 1) {
-
         requestAnimationFrame(update);
-
       } else {
-
-        element.textContent =
-          finalValue;
-
+        element.textContent = finalValue;
       }
-
     }
 
     requestAnimationFrame(update);
-
   }
 
-
-  const stats =
-    document.querySelector(".stats");
-
+  const stats = document.querySelector(".stats");
 
   if (stats) {
+    const statsObserver = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
 
-    const statsObserver =
-      new IntersectionObserver(
+          statNumbers.forEach(animateNumber);
 
-        entries => {
-
-          entries.forEach(entry => {
-
-            if (!entry.isIntersecting) return;
-
-            statNumbers.forEach(
-              animateNumber
-            );
-
-            statsObserver.unobserve(
-              entry.target
-            );
-
-          });
-
-        },
-
-        {
-          threshold: 0.5
-        }
-
-      );
-
+          statsObserver.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.5
+      }
+    );
 
     statsObserver.observe(stats);
-
   }
-
 
   /* =========================================================
      SCROLL PROGRESS
   ========================================================= */
 
-  const scrollProgress =
-    document.createElement("div");
+  const scrollProgress = document.createElement("div");
 
-  scrollProgress.className =
-    "scroll-progress";
+  scrollProgress.className = "scroll-progress";
 
-  document.body.appendChild(
-    scrollProgress
-  );
-
+  document.body.appendChild(scrollProgress);
 
   function updateScrollProgress() {
-
-    const scrollTop =
-      window.scrollY;
+    const scrollTop = window.scrollY;
 
     const documentHeight =
       document.documentElement.scrollHeight -
       window.innerHeight;
 
-    const percentage =
-      documentHeight > 0
-        ? (scrollTop / documentHeight) * 100
-        : 0;
+    const percentage = documentHeight > 0
+      ? (scrollTop / documentHeight) * 100
+      : 0;
 
-    scrollProgress.style.width =
-      `${percentage}%`;
-
+    scrollProgress.style.width = `${percentage}%`;
   }
-
 
   window.addEventListener(
     "scroll",
@@ -980,7 +738,6 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   updateScrollProgress();
-
 
   /* =========================================================
      CONSOLE
